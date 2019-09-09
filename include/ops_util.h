@@ -1,20 +1,11 @@
 #include <armadillo>
+#include "mtype.h"
 
 using namespace arma;
+using namespace mtype;
 
 namespace ops_util {
-    enum Position {
-        LEFT,
-        RIGHT,
-        TOP,
-        BOTTOM
-    };
-
-    enum Padding {
-        SAME,
-        VALID
-    };
-
+    
     class Conv2d_Transpose {
         public:
             static arma::mat merge_cols(const arma::mat &a, const arma::mat &b, int stride=1);

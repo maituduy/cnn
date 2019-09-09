@@ -11,17 +11,20 @@ using namespace ops;
 using namespace ops_util;
 
 int main() {    
-    mat a = { 
-        {3,3},
-        {1,1}
-    };
+    // mat a = { 
+    //     {3,3},
+    //     {1,1}
+    // };
 
-    mat kernel = {
-        {1,2,3},
-        {0,1,0},
-        {2,1,2}    
-    };
+    // mat kernel = {
+    //     {1,2,3},
+    //     {0,1,0},
+    //     {2,1,2}    
+    // };
 
-    ops_util::Conv2d_Transpose::conv2d_transpose(a,kernel,Padding::SAME,2).print();
+    // ops_util::Conv2d_Transpose::conv2d_transpose(a,kernel,Padding::SAME,2).print();
+    arma::mat b;
+    b(3,3) = 1;
+    b.print();
     return 0;
 }

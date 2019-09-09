@@ -40,9 +40,24 @@ namespace ops {
         // }
     // }
 
-    static arma::field<cube> conv2d_transpose(const arma::field<cube> &input, arma::field<cube> kernel, std::string padding, int stride) {
+    static arma::field<cube> conv2d_transpose(const arma::field<cube> &input, arma::field<cube> kernel, Padding padding, int stride) {
         arma::field<cube> result(input.n_elem);
 
-        
+        for (size_t i = 0; i < input.n_elem; i++) {
+            
+            arma::cube el = input(i);
+            
+            for (size_t j = 0; j < kernel.n_elem; j++) {
+                arma::cube tmp;
+                for (size_t k = 0; k < el.n_slices; k++) {
+                
+                    el.slice(j);
+                }
+            }
+            
+            
+        }
+
+        return result;
     }
 }

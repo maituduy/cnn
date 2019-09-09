@@ -1,6 +1,8 @@
 #include "armadillo"
+#include "mtype.h"
 
 using namespace arma;
+using namespace mtype;
 
 namespace ops {
     class NnOps {
