@@ -1,4 +1,4 @@
-#include "../include/activation.h"
+#include "activation.h"
 #include "armadillo"
 
 using namespace arma;

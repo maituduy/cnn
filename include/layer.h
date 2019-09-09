@@ -1,7 +1,10 @@
+#include "armadillo"
+
 template<typename T>
 class Layer {
     private:
-        T data;
+        arma::field<arma::cube> input;
+        T kernel;
     public:
-        T foward() {}
+        arma::field<arma::cube> foward();
 };

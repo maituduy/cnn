@@ -1,4 +1,4 @@
-#include "../include/nn_ops.h"
+#include "nn_ops.h"
 #include "armadillo"
 
 using namespace arma;
@@ -40,7 +40,9 @@ namespace ops {
         // }
     // }
 
-    static arma::field<cube> conv2d_transpose(const arma::field<cube> &input, arma::field<cube> kernel, std::string padding, int stride[]) {
+    static arma::field<cube> conv2d_transpose(const arma::field<cube> &input, arma::field<cube> kernel, std::string padding, int stride) {
+        arma::field<cube> result(input.n_elem);
+
         
     }
 }
