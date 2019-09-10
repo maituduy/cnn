@@ -1,3 +1,5 @@
+#pragma once
+
 namespace mtype {
     
     enum Position {
@@ -11,4 +13,14 @@ namespace mtype {
         SAME,
         VALID
     };
+
+    struct Size {
+        unsigned int w,h;
+
+        Size(unsigned int _w, unsigned int _h) {
+            w = _w;
+            h = _h;
+        }
+    };
+    
 }

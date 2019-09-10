@@ -1,7 +1,11 @@
 #include "nn_ops.h"
+#include "ops_util.h"
+#include "mtype.h"
 #include "armadillo"
 
 using namespace arma;
+using namespace ops_util;
+using namespace mtype;
 
 namespace ops {   
 
@@ -42,22 +46,41 @@ namespace ops {
 
     static arma::field<cube> conv2d_transpose(const arma::field<cube> &input, arma::field<cube> kernel, Padding padding, int stride) {
         arma::field<cube> result(input.n_elem);
-
+        
+        mtype::Size output_size = Conv2d_Transpose::get_output_size(input(0).slice(0), kernel.n_rows, padding, stride);
+        
         for (size_t i = 0; i < input.n_elem; i++) {
             
             arma::cube el = input(i);
-            
+            arma::cube sub_res(output_size.w, output_size.h, kernel.n_elem);
+
             for (size_t j = 0; j < kernel.n_elem; j++) {
-                arma::cube tmp;
-                for (size_t k = 0; k < el.n_slices; k++) {
                 
-                    el.slice(j);
-                }
+                arma::cube products(output_size.w, output_size.h, el.n_slices);
+                for (size_t k = 0; k < el.n_slices; k++) 
+                    products.slice(k) = Conv2d_Transpose::conv2d_transpose(
+                        el.slice(k), 
+                        kernel(j).slice(k),
+                        padding,
+                        stride
+                    );
+
+                sub_res.slice(j) = arma::sum(products, 2);
             }
             
-            
+            result(i) = sub_res;
         }
 
+        return result;
+    }
+    
+    arma::field<cube> max_pooling2d(const arma::field<cube> &input, int pooling_size=2, Padding padding = Padding::SAME, int stride=2) {
+        arma::field<cube> result(input.n_elem);
+
+        for (size_t i = 0; i < input.n_elem; i++) {
+            
+        }
+        
         return result;
     }
 }

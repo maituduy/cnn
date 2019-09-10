@@ -6,7 +6,7 @@ using namespace arma;
 namespace ops_util {
 
     // ************************************Conv2d_Transpose************************************
-
+    // ****************************************BEGIN************************************
     arma::mat Conv2d_Transpose::merge_cols(const arma::mat &a, const arma::mat &b, int stride) {
 
         return arma::join_rows(
@@ -58,10 +58,8 @@ namespace ops_util {
         
         bool pad_flag = ((int)(padding_size * 2) % 2 == 0) ? false : true;
         
-        arma::mat out = arma::mat(
-            stride * (a.n_rows -1) + kernel.n_rows - 2 * padding_size,
-            stride * (a.n_cols -1) + kernel.n_cols - 2 * padding_size
-        );
+        Size output_size = Conv2d_Transpose::get_output_size(a, kernel.n_rows, padding, stride);
+        arma::mat out = arma::mat(output_size.w, output_size.h);
 
         arma::field<arma::mat> tmp_rows(a.n_rows);
         for (size_t i = 0; i < a.n_rows; i++) {
@@ -84,5 +82,60 @@ namespace ops_util {
         return pad_flag ? tmp.submat(1, 1, tmp.n_rows - 1, tmp.n_cols - 1) : tmp;
     }
 
+    Size Conv2d_Transpose::get_output_size(const arma::mat &a, int kernel_size, Padding padding, int stride) {
+        return padding == Padding::SAME ? 
+            Size(stride * a.n_rows, stride * a.n_cols) : 
+            Size(stride * (a.n_rows -1) + kernel_size, stride * (a.n_cols -1) + kernel_size);
+    }
+
+    // ****************************************END********************************************
     // ************************************Conv2d_Transpose************************************
+    
+
+    // ************************************Max_Pooling2d*****************************************
+    // ***************************************BEGIN**********************************************
+
+    arma::mat Max_Pooling2D::max_pooling(const arma::mat &a, int pooling_size, Padding padding, int stride) {
+
+    }
+    // *****************************************END**********************************************
+    // ************************************Max_Pooling2d*****************************************
+
+    // *******************************************Common*****************************************
+    // *******************************************BEGIN******************************************
+
+    arma::mat Common::pad(const arma::mat &a, int padding_size) {
+        arma::mat result(a);
+        result.insert_cols(0, padding_size);
+        result.insert_cols(result.n_cols, padding_size);
+        result.insert_rows(0, padding_size);
+        result.insert_rows(result.n_rows, padding_size);
+        return result;
+    }
+
+    arma::mat Common::pad_by_pos(const arma::mat &a, Position pos, int padding_size) {
+        arma::mat result(a);
+
+        switch (pos) {
+            case Position::LEFT:
+                result.insert_cols(0,padding_size);
+                break;
+
+            case Position::RIGHT:
+                result.insert_cols(result.n_cols,padding_size);
+                break;
+
+            case Position::TOP:
+                result.insert_rows(0,padding_size);
+                break;
+
+            default:
+                result.insert_rows(result.n_rows,padding_size);
+
+        }
+        return result;
+    }
+
+    // *********************************************END******************************************
+    // *******************************************Common*****************************************
 }
