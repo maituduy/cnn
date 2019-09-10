@@ -14,6 +14,11 @@ namespace mtype {
         VALID
     };
 
+    enum PoolingMode {
+        MAX,
+        AVERAGE
+    };
+
     struct Size {
         unsigned int w,h;
 

@@ -7,7 +7,7 @@ find_package(Armadillo REQUIRED)
 include_directories(${ARMADILLO_INCLUDE_DIRS})
 
 # set(TARGET "bin/output")
-set(CMAKE_CXX_FLAGS "-larmadillo")
+set(CMAKE_CXX_FLAGS "-O2 -larmadillo")
 
 file(GLOB SOURCES "src/*.cpp")
 

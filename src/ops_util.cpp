@@ -8,20 +8,30 @@ namespace ops_util {
     // ************************************Conv2d_Transpose************************************
     // ****************************************BEGIN************************************
     arma::mat Conv2d_Transpose::merge_cols(const arma::mat &a, const arma::mat &b, int stride) {
+        bool comp = a.n_cols > b.n_cols;
+
+        int left = comp ? a.n_cols + stride - b.n_cols: stride;
+        int mid = comp ? b.n_cols - stride : a.n_cols - stride;
+        int right = stride;
 
         return arma::join_rows(
-            a.head_cols(stride), 
-            a.tail_cols(a.n_cols - stride) + b.head_cols(b.n_cols - stride),
-            b.tail_cols(stride)
+            a.head_cols(left), 
+            a.tail_cols(mid) + b.head_cols(mid),
+            b.tail_cols(right)
         );
     }
 
     arma::mat Conv2d_Transpose::merge_rows(const arma::mat &a, const arma::mat &b, int stride) {
+        bool comp = a.n_rows > b.n_rows;
+
+        int left = comp ? a.n_rows + stride - b.n_rows: stride;
+        int mid = comp ? b.n_rows - stride: a.n_rows - stride;
+        int right = stride;
 
         return arma::join_cols(
-            a.head_rows(stride), 
-            a.tail_rows(a.n_rows - stride) + b.head_rows(b.n_rows - stride),
-            b.tail_rows(stride)
+            a.head_rows(left), 
+            a.tail_rows(mid) + b.head_rows(mid),
+            b.tail_rows(right)
         );
     }
 
@@ -35,7 +45,7 @@ namespace ops_util {
         );
     }
 
-    arma::mat Conv2d_Transpose::apply_conv2d_transpose_padding_by_pos(const arma::mat &a, Position pos, int padding) {
+    arma::mat Conv2d_Transpose::apply_conv2d_transpose_padding(const arma::mat &a, Position pos, int padding) {
         switch (pos) {
 
         case Position::LEFT:
@@ -60,32 +70,31 @@ namespace ops_util {
         
         Size output_size = Conv2d_Transpose::get_output_size(a, kernel.n_rows, padding, stride);
         arma::mat out = arma::mat(output_size.w, output_size.h);
-
+        
         arma::field<arma::mat> tmp_rows(a.n_rows);
         for (size_t i = 0; i < a.n_rows; i++) {
 
             arma::mat tmp_cols = a(i,0) * kernel;
 
-            for (size_t j = 1; j < a.n_cols; j++) 
-                tmp_cols = Conv2d_Transpose::merge_cols(tmp_cols, a(i,j) * kernel, stride);                
-            
+            for (size_t j = 1; j < a.n_cols; j++)
+                tmp_cols = Conv2d_Transpose::merge_cols(tmp_cols, a(i,j) * kernel, stride);
+              
             tmp_rows(i) = tmp_cols;  
               
         }
-        
         arma::mat tmp = tmp_rows(0);
         for (size_t i = 1; i < tmp_rows.n_elem; i++)
             tmp = Conv2d_Transpose::merge_rows(tmp, tmp_rows(i), stride);
-        
+
         tmp = Conv2d_Transpose::apply_conv2d_transpose_padding(tmp, (int) padding_size);
         
-        return pad_flag ? tmp.submat(1, 1, tmp.n_rows - 1, tmp.n_cols - 1) : tmp;
+        return pad_flag ? tmp.submat(0, 0, tmp.n_rows - 2, tmp.n_cols - 2) : tmp;
     }
 
     Size Conv2d_Transpose::get_output_size(const arma::mat &a, int kernel_size, Padding padding, int stride) {
         return padding == Padding::SAME ? 
             Size(stride * a.n_rows, stride * a.n_cols) : 
-            Size(stride * (a.n_rows -1) + kernel_size, stride * (a.n_cols -1) + kernel_size);
+            Size(stride * a.n_rows + std::max(kernel_size - stride, 0), stride * a.n_cols + std::max(kernel_size - stride, 0));
     }
 
     // ****************************************END********************************************
@@ -113,7 +122,7 @@ namespace ops_util {
         return result;
     }
 
-    arma::mat Common::pad_by_pos(const arma::mat &a, Position pos, int padding_size) {
+    arma::mat Common::pad(const arma::mat &a, Position pos, int padding_size) {
         arma::mat result(a);
 
         switch (pos) {
@@ -136,6 +145,9 @@ namespace ops_util {
         return result;
     }
 
+    double Common::pool(const arma::mat &a, PoolingMode pool_mode) {
+        return pool_mode == PoolingMode::MAX ? a.max(): arma::mean(arma::mean(a));
+    }
     // *********************************************END******************************************
     // *******************************************Common*****************************************
 }
