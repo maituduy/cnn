@@ -1,1 +1,3 @@
-compile & run : g++ src/main.cpp -o bin/out -larmadillo && bin/out
+cmake: mkdir build && cd build && cmake ..
+
+compile & run : make -j8 && ./medical-cnn
