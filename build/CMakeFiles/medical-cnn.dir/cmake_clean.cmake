@@ -1,8 +1,8 @@
 file(REMOVE_RECURSE
   "CMakeFiles/medical-cnn.dir/src/activation.cpp.o"
+  "CMakeFiles/medical-cnn.dir/src/f.cpp.o"
   "CMakeFiles/medical-cnn.dir/src/main.cpp.o"
   "CMakeFiles/medical-cnn.dir/src/nn_ops.cpp.o"
-  "CMakeFiles/medical-cnn.dir/src/ops_util.cpp.o"
   "medical-cnn.pdb"
   "medical-cnn"
 )

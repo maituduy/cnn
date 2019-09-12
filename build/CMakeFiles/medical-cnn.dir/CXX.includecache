@@ -10,6 +10,12 @@
 armadillo
 -
 
+../include/f.h
+armadillo
+../include/armadillo
+mtype.h
+../include/mtype.h
+
 ../include/mtype.h
 
 ../include/nn_ops.h
@@ -18,43 +24,37 @@ armadillo
 mtype.h
 ../include/mtype.h
 
-../include/ops_util.h
-armadillo
--
-mtype.h
-../include/mtype.h
-
-/home/xmw/dev/medical-cnn/src/activation.cpp
+/home/mxw/dev/medical-cnn/src/activation.cpp
 activation.h
-/home/xmw/dev/medical-cnn/src/activation.h
+/home/mxw/dev/medical-cnn/src/activation.h
 armadillo
-/home/xmw/dev/medical-cnn/src/armadillo
+/home/mxw/dev/medical-cnn/src/armadillo
 
-/home/xmw/dev/medical-cnn/src/main.cpp
+/home/mxw/dev/medical-cnn/src/f.cpp
+armadillo
+/home/mxw/dev/medical-cnn/src/armadillo
+f.h
+/home/mxw/dev/medical-cnn/src/f.h
+
+/home/mxw/dev/medical-cnn/src/main.cpp
 iostream
 -
 armadillo
 -
 nn_ops.h
-/home/xmw/dev/medical-cnn/src/nn_ops.h
+/home/mxw/dev/medical-cnn/src/nn_ops.h
 activation.h
-/home/xmw/dev/medical-cnn/src/activation.h
-ops_util.h
-/home/xmw/dev/medical-cnn/src/ops_util.h
+/home/mxw/dev/medical-cnn/src/activation.h
+f.h
+/home/mxw/dev/medical-cnn/src/f.h
 
-/home/xmw/dev/medical-cnn/src/nn_ops.cpp
+/home/mxw/dev/medical-cnn/src/nn_ops.cpp
 nn_ops.h
-/home/xmw/dev/medical-cnn/src/nn_ops.h
-ops_util.h
-/home/xmw/dev/medical-cnn/src/ops_util.h
+/home/mxw/dev/medical-cnn/src/nn_ops.h
+f.h
+/home/mxw/dev/medical-cnn/src/f.h
 mtype.h
-/home/xmw/dev/medical-cnn/src/mtype.h
+/home/mxw/dev/medical-cnn/src/mtype.h
 armadillo
-/home/xmw/dev/medical-cnn/src/armadillo
-
-/home/xmw/dev/medical-cnn/src/ops_util.cpp
-armadillo
-/home/xmw/dev/medical-cnn/src/armadillo
-ops_util.h
-/home/xmw/dev/medical-cnn/src/ops_util.h
+/home/mxw/dev/medical-cnn/src/armadillo
 

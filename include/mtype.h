@@ -16,7 +16,8 @@ namespace mtype {
 
     enum PoolingMode {
         MAX,
-        AVERAGE
+        AVERAGE,
+        AVERAGE_TF
     };
 
     struct Size {
@@ -25,6 +26,17 @@ namespace mtype {
         Size(unsigned int _w, unsigned int _h) {
             w = _w;
             h = _h;
+        }
+    };
+
+    struct PaddingShape {
+        unsigned int t,b,l,r;
+
+        PaddingShape(unsigned int _t, unsigned int _b, unsigned int _l, unsigned int _r) {
+            t = _t;
+            b = _b;
+            l = _l;
+            r = _r;
         }
     };
     

@@ -4,18 +4,18 @@
 CMakeFiles/medical-cnn.dir/src/activation.cpp.o: ../include/activation.h
 CMakeFiles/medical-cnn.dir/src/activation.cpp.o: ../src/activation.cpp
 
+CMakeFiles/medical-cnn.dir/src/f.cpp.o: ../include/f.h
+CMakeFiles/medical-cnn.dir/src/f.cpp.o: ../include/mtype.h
+CMakeFiles/medical-cnn.dir/src/f.cpp.o: ../src/f.cpp
+
 CMakeFiles/medical-cnn.dir/src/main.cpp.o: ../include/activation.h
+CMakeFiles/medical-cnn.dir/src/main.cpp.o: ../include/f.h
 CMakeFiles/medical-cnn.dir/src/main.cpp.o: ../include/mtype.h
 CMakeFiles/medical-cnn.dir/src/main.cpp.o: ../include/nn_ops.h
-CMakeFiles/medical-cnn.dir/src/main.cpp.o: ../include/ops_util.h
 CMakeFiles/medical-cnn.dir/src/main.cpp.o: ../src/main.cpp
 
+CMakeFiles/medical-cnn.dir/src/nn_ops.cpp.o: ../include/f.h
 CMakeFiles/medical-cnn.dir/src/nn_ops.cpp.o: ../include/mtype.h
 CMakeFiles/medical-cnn.dir/src/nn_ops.cpp.o: ../include/nn_ops.h
-CMakeFiles/medical-cnn.dir/src/nn_ops.cpp.o: ../include/ops_util.h
 CMakeFiles/medical-cnn.dir/src/nn_ops.cpp.o: ../src/nn_ops.cpp
-
-CMakeFiles/medical-cnn.dir/src/ops_util.cpp.o: ../include/mtype.h
-CMakeFiles/medical-cnn.dir/src/ops_util.cpp.o: ../include/ops_util.h
-CMakeFiles/medical-cnn.dir/src/ops_util.cpp.o: ../src/ops_util.cpp
 

@@ -48,10 +48,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/xmw/dev/medical-cnn
+CMAKE_SOURCE_DIR = /home/mxw/dev/medical-cnn
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/xmw/dev/medical-cnn/build
+CMAKE_BINARY_DIR = /home/mxw/dev/medical-cnn/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -80,9 +80,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/xmw/dev/medical-cnn/build/CMakeFiles /home/xmw/dev/medical-cnn/build/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/mxw/dev/medical-cnn/build/CMakeFiles /home/mxw/dev/medical-cnn/build/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/xmw/dev/medical-cnn/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/mxw/dev/medical-cnn/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -150,6 +150,33 @@ src/activation.cpp.s:
 	$(MAKE) -f CMakeFiles/medical-cnn.dir/build.make CMakeFiles/medical-cnn.dir/src/activation.cpp.s
 .PHONY : src/activation.cpp.s
 
+src/f.o: src/f.cpp.o
+
+.PHONY : src/f.o
+
+# target to build an object file
+src/f.cpp.o:
+	$(MAKE) -f CMakeFiles/medical-cnn.dir/build.make CMakeFiles/medical-cnn.dir/src/f.cpp.o
+.PHONY : src/f.cpp.o
+
+src/f.i: src/f.cpp.i
+
+.PHONY : src/f.i
+
+# target to preprocess a source file
+src/f.cpp.i:
+	$(MAKE) -f CMakeFiles/medical-cnn.dir/build.make CMakeFiles/medical-cnn.dir/src/f.cpp.i
+.PHONY : src/f.cpp.i
+
+src/f.s: src/f.cpp.s
+
+.PHONY : src/f.s
+
+# target to generate assembly for a file
+src/f.cpp.s:
+	$(MAKE) -f CMakeFiles/medical-cnn.dir/build.make CMakeFiles/medical-cnn.dir/src/f.cpp.s
+.PHONY : src/f.cpp.s
+
 src/main.o: src/main.cpp.o
 
 .PHONY : src/main.o
@@ -204,33 +231,6 @@ src/nn_ops.cpp.s:
 	$(MAKE) -f CMakeFiles/medical-cnn.dir/build.make CMakeFiles/medical-cnn.dir/src/nn_ops.cpp.s
 .PHONY : src/nn_ops.cpp.s
 
-src/ops_util.o: src/ops_util.cpp.o
-
-.PHONY : src/ops_util.o
-
-# target to build an object file
-src/ops_util.cpp.o:
-	$(MAKE) -f CMakeFiles/medical-cnn.dir/build.make CMakeFiles/medical-cnn.dir/src/ops_util.cpp.o
-.PHONY : src/ops_util.cpp.o
-
-src/ops_util.i: src/ops_util.cpp.i
-
-.PHONY : src/ops_util.i
-
-# target to preprocess a source file
-src/ops_util.cpp.i:
-	$(MAKE) -f CMakeFiles/medical-cnn.dir/build.make CMakeFiles/medical-cnn.dir/src/ops_util.cpp.i
-.PHONY : src/ops_util.cpp.i
-
-src/ops_util.s: src/ops_util.cpp.s
-
-.PHONY : src/ops_util.s
-
-# target to generate assembly for a file
-src/ops_util.cpp.s:
-	$(MAKE) -f CMakeFiles/medical-cnn.dir/build.make CMakeFiles/medical-cnn.dir/src/ops_util.cpp.s
-.PHONY : src/ops_util.cpp.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -243,15 +243,15 @@ help:
 	@echo "... src/activation.o"
 	@echo "... src/activation.i"
 	@echo "... src/activation.s"
+	@echo "... src/f.o"
+	@echo "... src/f.i"
+	@echo "... src/f.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
 	@echo "... src/nn_ops.o"
 	@echo "... src/nn_ops.i"
 	@echo "... src/nn_ops.s"
-	@echo "... src/ops_util.o"
-	@echo "... src/ops_util.i"
-	@echo "... src/ops_util.s"
 .PHONY : help
 
 

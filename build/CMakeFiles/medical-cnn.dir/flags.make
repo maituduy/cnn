@@ -6,5 +6,5 @@ CXX_FLAGS = -O2 -larmadillo
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/xmw/dev/medical-cnn/include 
+CXX_INCLUDES = -I/home/mxw/dev/medical-cnn/include 
 

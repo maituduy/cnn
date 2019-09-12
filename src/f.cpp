@@ -1,9 +1,9 @@
 #include "armadillo"
-#include "ops_util.h"
+#include "f.h"
 
 using namespace arma;
 
-namespace ops_util {
+namespace f {
 
     // ************************************Conv2d_Transpose************************************
     // ****************************************BEGIN************************************
@@ -104,7 +104,65 @@ namespace ops_util {
     // ************************************Max_Pooling2d*****************************************
     // ***************************************BEGIN**********************************************
 
-    arma::mat Max_Pooling2D::max_pooling(const arma::mat &a, int pooling_size, Padding padding, int stride) {
+    double Pooling2D::pool_sub(const arma::mat &a, PoolingMode pool_mode) {
+        return (pool_mode == PoolingMode::MAX) ? a.max(): arma::mean(arma::mean(a));
+    }
+
+    arma::mat Pooling2D::pool(arma::mat a, int pooling_size, 
+                            Padding padding, PoolingMode pool_mode, int stride) {
+        
+        int output_size = Common::get_output_size(a, padding, pooling_size, stride);
+
+        double needed_pad = Common::get_needed_pad(a, output_size, pooling_size, stride);
+        
+        int min_x, min_y, max_x, max_y;
+
+        if (padding == Padding::SAME) {
+            a = Common::apply_needed_pad(a, needed_pad);
+
+            min_x = min_y = (int)needed_pad;
+            max_x = max_y = a.n_rows - 1 - (int)needed_pad;
+            if ((int)needed_pad != needed_pad) {            
+                max_x--;
+                max_y--;
+            }
+        } else {
+            min_x = min_y = 0;
+            max_x = max_y = a.n_rows;
+        }
+
+        int index = 0;
+        
+        arma::vec vec_res(output_size*output_size);
+        for (size_t i = 0; i < a.n_rows; i += stride)
+            for (size_t j = 0; j < a.n_cols; j += stride)
+                if (i + pooling_size - 1  < a.n_rows && j + pooling_size - 1 < a.n_cols) {
+                    int start_x = i;
+                    int start_y = j;
+                    int end_x = i + pooling_size - 1;
+                    int end_y = j + pooling_size - 1;
+
+                    if (pool_mode == PoolingMode::AVERAGE_TF || pool_mode == PoolingMode::MAX) {
+                        if (start_x < min_x) start_x = min_x;
+                        if (start_y < min_y) start_y = min_y;
+                        if (end_x > max_x) end_x = max_x;
+                        if (end_y > max_y) end_y = max_y;
+                    }
+
+                    vec_res(index++) = Pooling2D::pool_sub(
+                        a.submat(
+                            start_x,
+                            start_y, 
+                            end_x, 
+                            end_y
+                        ), 
+                        pool_mode
+                    );
+                }
+                    
+                    
+        
+        return arma::reshape(vec_res, output_size, output_size).t();
 
     }
     // *****************************************END**********************************************
@@ -113,40 +171,40 @@ namespace ops_util {
     // *******************************************Common*****************************************
     // *******************************************BEGIN******************************************
 
-    arma::mat Common::pad(const arma::mat &a, int padding_size) {
+    arma::mat Common::pad(const arma::mat &a, PaddingShape paddings) {
         arma::mat result(a);
-        result.insert_cols(0, padding_size);
-        result.insert_cols(result.n_cols, padding_size);
-        result.insert_rows(0, padding_size);
-        result.insert_rows(result.n_rows, padding_size);
+        // top
+        result.insert_rows(0, paddings.t);
+        // bot
+        result.insert_rows(result.n_rows, paddings.b);
+        // left
+        result.insert_cols(0, paddings.l);
+        // right
+        result.insert_cols(result.n_cols, paddings.r);
         return result;
     }
 
-    arma::mat Common::pad(const arma::mat &a, Position pos, int padding_size) {
-        arma::mat result(a);
-
-        switch (pos) {
-            case Position::LEFT:
-                result.insert_cols(0,padding_size);
-                break;
-
-            case Position::RIGHT:
-                result.insert_cols(result.n_cols,padding_size);
-                break;
-
-            case Position::TOP:
-                result.insert_rows(0,padding_size);
-                break;
-
-            default:
-                result.insert_rows(result.n_rows,padding_size);
-
-        }
-        return result;
+    arma::mat Common::pad(const arma::mat &a, int padding) {
+        return Common::pad(a, PaddingShape(padding, padding, padding, padding));
     }
 
-    double Common::pool(const arma::mat &a, PoolingMode pool_mode) {
-        return pool_mode == PoolingMode::MAX ? a.max(): arma::mean(arma::mean(a));
+    int Common::get_output_size(const arma::mat &a, Padding padding, int kernel_size, int stride) {
+        return padding == Padding::SAME ? 
+                ceil((float)a.n_rows / stride) : 
+                (a.n_rows - kernel_size) / stride + 1;
+    }
+
+    double Common::get_needed_pad(const arma::mat &a, int output_size, int kernel_size, int stride) {
+        return std::max(((double)stride * (output_size - 1) - a.n_rows + kernel_size) / 2,0.0);
+    }
+
+    arma::mat Common::apply_needed_pad(arma::mat a, double needed_pad) {
+           
+        a = Common::pad(a, (int)needed_pad);
+        if ((int)needed_pad != needed_pad) 
+            a = Common::pad(a, PaddingShape(0,1,0,1));
+        
+        return a;
     }
     // *********************************************END******************************************
     // *******************************************Common*****************************************
