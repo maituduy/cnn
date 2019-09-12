@@ -35,5 +35,9 @@ namespace f {
             static double pool_sub(const arma::mat &a, PoolingMode pool_mode = PoolingMode::MAX);
     };
 
-    
+    class Conv2d {
+        public:
+            static arma::mat conv2d(arma::mat a, const arma::mat &kernel, Padding padding = Padding::SAME, int stride=1);
+            static double dot_sum(arma::mat a, const arma::mat &kernel);
+    };
 }

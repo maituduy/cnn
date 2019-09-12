@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/mxw/dev/medical-cnn
+CMAKE_SOURCE_DIR = /home/xmw/dev/medical-cnn
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/mxw/dev/medical-cnn/build
+CMAKE_BINARY_DIR = /home/xmw/dev/medical-cnn/build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/medical-cnn.dir/depend.make
@@ -59,16 +59,16 @@ include CMakeFiles/medical-cnn.dir/flags.make
 
 CMakeFiles/medical-cnn.dir/src/activation.cpp.o: CMakeFiles/medical-cnn.dir/flags.make
 CMakeFiles/medical-cnn.dir/src/activation.cpp.o: ../src/activation.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxw/dev/medical-cnn/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/medical-cnn.dir/src/activation.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/medical-cnn.dir/src/activation.cpp.o -c /home/mxw/dev/medical-cnn/src/activation.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/xmw/dev/medical-cnn/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/medical-cnn.dir/src/activation.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/medical-cnn.dir/src/activation.cpp.o -c /home/xmw/dev/medical-cnn/src/activation.cpp
 
 CMakeFiles/medical-cnn.dir/src/activation.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/medical-cnn.dir/src/activation.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/mxw/dev/medical-cnn/src/activation.cpp > CMakeFiles/medical-cnn.dir/src/activation.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/xmw/dev/medical-cnn/src/activation.cpp > CMakeFiles/medical-cnn.dir/src/activation.cpp.i
 
 CMakeFiles/medical-cnn.dir/src/activation.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/medical-cnn.dir/src/activation.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/mxw/dev/medical-cnn/src/activation.cpp -o CMakeFiles/medical-cnn.dir/src/activation.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/xmw/dev/medical-cnn/src/activation.cpp -o CMakeFiles/medical-cnn.dir/src/activation.cpp.s
 
 CMakeFiles/medical-cnn.dir/src/activation.cpp.o.requires:
 
@@ -83,16 +83,16 @@ CMakeFiles/medical-cnn.dir/src/activation.cpp.o.provides.build: CMakeFiles/medic
 
 CMakeFiles/medical-cnn.dir/src/f.cpp.o: CMakeFiles/medical-cnn.dir/flags.make
 CMakeFiles/medical-cnn.dir/src/f.cpp.o: ../src/f.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxw/dev/medical-cnn/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/medical-cnn.dir/src/f.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/medical-cnn.dir/src/f.cpp.o -c /home/mxw/dev/medical-cnn/src/f.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/xmw/dev/medical-cnn/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/medical-cnn.dir/src/f.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/medical-cnn.dir/src/f.cpp.o -c /home/xmw/dev/medical-cnn/src/f.cpp
 
 CMakeFiles/medical-cnn.dir/src/f.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/medical-cnn.dir/src/f.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/mxw/dev/medical-cnn/src/f.cpp > CMakeFiles/medical-cnn.dir/src/f.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/xmw/dev/medical-cnn/src/f.cpp > CMakeFiles/medical-cnn.dir/src/f.cpp.i
 
 CMakeFiles/medical-cnn.dir/src/f.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/medical-cnn.dir/src/f.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/mxw/dev/medical-cnn/src/f.cpp -o CMakeFiles/medical-cnn.dir/src/f.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/xmw/dev/medical-cnn/src/f.cpp -o CMakeFiles/medical-cnn.dir/src/f.cpp.s
 
 CMakeFiles/medical-cnn.dir/src/f.cpp.o.requires:
 
@@ -107,16 +107,16 @@ CMakeFiles/medical-cnn.dir/src/f.cpp.o.provides.build: CMakeFiles/medical-cnn.di
 
 CMakeFiles/medical-cnn.dir/src/main.cpp.o: CMakeFiles/medical-cnn.dir/flags.make
 CMakeFiles/medical-cnn.dir/src/main.cpp.o: ../src/main.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxw/dev/medical-cnn/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/medical-cnn.dir/src/main.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/medical-cnn.dir/src/main.cpp.o -c /home/mxw/dev/medical-cnn/src/main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/xmw/dev/medical-cnn/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/medical-cnn.dir/src/main.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/medical-cnn.dir/src/main.cpp.o -c /home/xmw/dev/medical-cnn/src/main.cpp
 
 CMakeFiles/medical-cnn.dir/src/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/medical-cnn.dir/src/main.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/mxw/dev/medical-cnn/src/main.cpp > CMakeFiles/medical-cnn.dir/src/main.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/xmw/dev/medical-cnn/src/main.cpp > CMakeFiles/medical-cnn.dir/src/main.cpp.i
 
 CMakeFiles/medical-cnn.dir/src/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/medical-cnn.dir/src/main.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/mxw/dev/medical-cnn/src/main.cpp -o CMakeFiles/medical-cnn.dir/src/main.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/xmw/dev/medical-cnn/src/main.cpp -o CMakeFiles/medical-cnn.dir/src/main.cpp.s
 
 CMakeFiles/medical-cnn.dir/src/main.cpp.o.requires:
 
@@ -131,16 +131,16 @@ CMakeFiles/medical-cnn.dir/src/main.cpp.o.provides.build: CMakeFiles/medical-cnn
 
 CMakeFiles/medical-cnn.dir/src/nn_ops.cpp.o: CMakeFiles/medical-cnn.dir/flags.make
 CMakeFiles/medical-cnn.dir/src/nn_ops.cpp.o: ../src/nn_ops.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxw/dev/medical-cnn/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/medical-cnn.dir/src/nn_ops.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/medical-cnn.dir/src/nn_ops.cpp.o -c /home/mxw/dev/medical-cnn/src/nn_ops.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/xmw/dev/medical-cnn/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/medical-cnn.dir/src/nn_ops.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/medical-cnn.dir/src/nn_ops.cpp.o -c /home/xmw/dev/medical-cnn/src/nn_ops.cpp
 
 CMakeFiles/medical-cnn.dir/src/nn_ops.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/medical-cnn.dir/src/nn_ops.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/mxw/dev/medical-cnn/src/nn_ops.cpp > CMakeFiles/medical-cnn.dir/src/nn_ops.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/xmw/dev/medical-cnn/src/nn_ops.cpp > CMakeFiles/medical-cnn.dir/src/nn_ops.cpp.i
 
 CMakeFiles/medical-cnn.dir/src/nn_ops.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/medical-cnn.dir/src/nn_ops.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/mxw/dev/medical-cnn/src/nn_ops.cpp -o CMakeFiles/medical-cnn.dir/src/nn_ops.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/xmw/dev/medical-cnn/src/nn_ops.cpp -o CMakeFiles/medical-cnn.dir/src/nn_ops.cpp.s
 
 CMakeFiles/medical-cnn.dir/src/nn_ops.cpp.o.requires:
 
@@ -170,7 +170,7 @@ medical-cnn: CMakeFiles/medical-cnn.dir/src/nn_ops.cpp.o
 medical-cnn: CMakeFiles/medical-cnn.dir/build.make
 medical-cnn: /usr/lib/x86_64-linux-gnu/libarmadillo.so
 medical-cnn: CMakeFiles/medical-cnn.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/mxw/dev/medical-cnn/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX executable medical-cnn"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/xmw/dev/medical-cnn/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX executable medical-cnn"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/medical-cnn.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -190,6 +190,6 @@ CMakeFiles/medical-cnn.dir/clean:
 .PHONY : CMakeFiles/medical-cnn.dir/clean
 
 CMakeFiles/medical-cnn.dir/depend:
-	cd /home/mxw/dev/medical-cnn/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/mxw/dev/medical-cnn /home/mxw/dev/medical-cnn /home/mxw/dev/medical-cnn/build /home/mxw/dev/medical-cnn/build /home/mxw/dev/medical-cnn/build/CMakeFiles/medical-cnn.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/xmw/dev/medical-cnn/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/xmw/dev/medical-cnn /home/xmw/dev/medical-cnn /home/xmw/dev/medical-cnn/build /home/xmw/dev/medical-cnn/build /home/xmw/dev/medical-cnn/build/CMakeFiles/medical-cnn.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/medical-cnn.dir/depend
 

@@ -168,6 +168,48 @@ namespace f {
     // *****************************************END**********************************************
     // ************************************Max_Pooling2d*****************************************
 
+    // *******************************************Conv2d*****************************************
+    // *******************************************BEGIN******************************************
+
+    arma::mat Conv2d::conv2d(arma::mat a, const arma::mat &kernel, Padding padding, int stride){
+        int output_size = Common::get_output_size(a, padding, kernel.n_rows, stride);
+
+        double needed_pad = Common::get_needed_pad(a, output_size, kernel.n_rows, stride);
+
+        if (padding == Padding::SAME) 
+            a = Common::apply_needed_pad(a, needed_pad);
+
+        int index = 0;
+        arma::vec vec_res(output_size*output_size);
+        for (size_t i = 0; i < a.n_rows; i += stride)
+            for (size_t j = 0; j < a.n_cols; j += stride)
+                if (i + kernel.n_rows - 1  < a.n_rows && j + kernel.n_rows - 1 < a.n_cols) 
+                    vec_res(index++) = Conv2d::dot_sum(
+                        a.submat(
+                            i,
+                            j, 
+                            i + kernel.n_rows - 1, 
+                            j + kernel.n_rows - 1
+                        ),
+                        kernel
+                    );
+        
+        return arma::reshape(vec_res, output_size, output_size).t();
+    }
+
+
+    double Conv2d::dot_sum(arma::mat a, const arma::mat &kernel) {
+
+        for (size_t i = 0; i < a.n_rows; i++) 
+            for (size_t j = 0; j < a.n_cols; j++)
+                a(i,j) *= kernel(i,j);
+
+        return arma::accu(a);
+        
+    }
+    // *******************************************Conv2d*****************************************
+    // *******************************************END********************************************
+
     // *******************************************Common*****************************************
     // *******************************************BEGIN******************************************
 
@@ -195,7 +237,7 @@ namespace f {
     }
 
     double Common::get_needed_pad(const arma::mat &a, int output_size, int kernel_size, int stride) {
-        return std::max(((double)stride * (output_size - 1) - a.n_rows + kernel_size) / 2,0.0);
+        return std::max(((double)stride * (output_size - 1) - a.n_rows + kernel_size) / 2, 0.0);
     }
 
     arma::mat Common::apply_needed_pad(arma::mat a, double needed_pad) {
