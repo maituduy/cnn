@@ -64,7 +64,7 @@ namespace f {
 
     arma::mat Conv2d_Transpose::conv2d_transpose(const arma::mat &a, const arma::mat &kernel, Padding padding, int stride) {
         
-        float padding_size = padding == Padding::SAME ? (float)(kernel.n_rows - stride)/2 : 0; 
+        float padding_size = padding == +Padding::SAME ? (float)(kernel.n_rows - stride)/2 : 0; 
         
         bool pad_flag = ((int)(padding_size * 2) % 2 == 0) ? false : true;
         
@@ -92,7 +92,7 @@ namespace f {
     }
 
     Size Conv2d_Transpose::get_output_size(const arma::mat &a, int kernel_size, Padding padding, int stride) {
-        return padding == Padding::SAME ? 
+        return padding == +Padding::SAME ? 
             Size(stride * a.n_rows, stride * a.n_cols) : 
             Size(stride * a.n_rows + std::max(kernel_size - stride, 0), stride * a.n_cols + std::max(kernel_size - stride, 0));
     }
@@ -105,19 +105,19 @@ namespace f {
     // ***************************************BEGIN**********************************************
 
     double Pooling2D::pool_sub(const arma::mat &a, PoolingMode pool_mode) {
-        return (pool_mode == PoolingMode::MAX) ? a.max(): arma::mean(arma::mean(a));
+        return (pool_mode == +PoolingMode::MAX) ? a.max(): arma::mean(arma::mean(a));
     }
 
     arma::mat Pooling2D::pool(arma::mat a, int pooling_size, 
                             Padding padding, PoolingMode pool_mode, int stride) {
         
-        int output_size = Common::get_output_size(a, padding, pooling_size, stride);
+        int output_size = Common::get_output_size(a.n_rows, padding, pooling_size, stride);
 
         double needed_pad = Common::get_needed_pad(a, output_size, pooling_size, stride);
         
         int min_x, min_y, max_x, max_y;
 
-        if (padding == Padding::SAME) {
+        if (padding == +Padding::SAME) {
             a = Common::apply_needed_pad(a, needed_pad);
 
             min_x = min_y = (int)needed_pad;
@@ -142,7 +142,7 @@ namespace f {
                     int end_x = i + pooling_size - 1;
                     int end_y = j + pooling_size - 1;
 
-                    if (pool_mode == PoolingMode::AVERAGE_TF || pool_mode == PoolingMode::MAX) {
+                    if (pool_mode == +PoolingMode::AVERAGE_TF || pool_mode == +PoolingMode::MAX) {
                         if (start_x < min_x) start_x = min_x;
                         if (start_y < min_y) start_y = min_y;
                         if (end_x > max_x) end_x = max_x;
@@ -172,11 +172,11 @@ namespace f {
     // *******************************************BEGIN******************************************
 
     arma::mat Conv2d::conv2d(arma::mat a, const arma::mat &kernel, Padding padding, int stride){
-        int output_size = Common::get_output_size(a, padding, kernel.n_rows, stride);
+        int output_size = Common::get_output_size(a.n_rows, padding, kernel.n_rows, stride);
 
         double needed_pad = Common::get_needed_pad(a, output_size, kernel.n_rows, stride);
 
-        if (padding == Padding::SAME) 
+        if (padding == +Padding::SAME) 
             a = Common::apply_needed_pad(a, needed_pad);
 
         int index = 0;
@@ -230,10 +230,10 @@ namespace f {
         return Common::pad(a, PaddingShape(padding, padding, padding, padding));
     }
 
-    int Common::get_output_size(const arma::mat &a, Padding padding, int kernel_size, int stride) {
-        return padding == Padding::SAME ? 
-                ceil((float)a.n_rows / stride) : 
-                (a.n_rows - kernel_size) / stride + 1;
+    int Common::get_output_size(int input_size, Padding padding, int kernel_size, int stride) {
+        return padding == +Padding::SAME ? 
+                ceil((float)input_size / stride) : 
+                (input_size - kernel_size) / stride + 1;
     }
 
     double Common::get_needed_pad(const arma::mat &a, int output_size, int kernel_size, int stride) {

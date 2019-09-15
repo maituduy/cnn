@@ -11,7 +11,7 @@ namespace ops {
 
     arma::field<cube> NnOps::conv2d(const arma::field<cube> &input, arma::field<cube> kernel, Padding padding, int stride) {
         arma::field<cube> result(input.n_elem);
-        auto output_size = f::Common::get_output_size(input(0).slice(0), padding, kernel(0).n_rows, stride);
+        auto output_size = f::Common::get_output_size(input(0).slice(0).n_rows, padding, kernel(0).n_rows, stride);
         
         for (size_t i = 0; i < input.n_elem; i++) {
             
@@ -70,7 +70,7 @@ namespace ops {
     
     arma::field<cube> NnOps::pooling2d(const arma::field<cube> &input, int pooling_size, Padding padding, PoolingMode mode, int stride) {
         arma::field<cube> result(input.n_elem);
-        auto output_size = f::Common::get_output_size(input(0).slice(0), padding, pooling_size, stride);
+        auto output_size = f::Common::get_output_size(input(0).slice(0).n_rows, padding, pooling_size, stride);
 
         for (size_t i = 0; i < input.n_elem; i++) {
             auto el = input(i);

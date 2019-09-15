@@ -1,3 +1,5 @@
+#pragma once
+
 #include "armadillo"
 #include "mtype.h"
 
@@ -21,7 +23,7 @@ namespace f {
             // top bot left right
             static arma::mat pad(const arma::mat &a, PaddingShape shape);
             static arma::mat pad(const arma::mat &a, int padding);
-            static int get_output_size(const arma::mat &a, Padding padding, int kernel_size, int stride);
+            static int get_output_size(int input_size, Padding padding, int kernel_size, int stride);
             static double get_needed_pad(const arma::mat &a, int output_size, int kernel_size, int stride);
             static arma::mat apply_needed_pad(arma::mat a, double needed_pad);
     };

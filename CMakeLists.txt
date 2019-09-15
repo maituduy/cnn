@@ -9,9 +9,10 @@ find_package(OpenCV REQUIRED )
 include_directories(${ARMADILLO_INCLUDE_DIRS})
 
 # set(TARGET "bin/output")
+set (CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS "-O2 -larmadillo")
 
-file(GLOB SOURCES "src/*.cpp")
+file(GLOB SOURCES "src/*.cpp" "src/layers/*.cpp")
 
 add_executable(medical-cnn ${SOURCES})
 

@@ -1,24 +1,32 @@
 #pragma once
+#include <variant>
+#include "enum.h"
 
 namespace mtype {
     
-    enum Position {
-        LEFT,
-        RIGHT,
-        TOP,
-        BOTTOM
+    BETTER_ENUM(Position, int, LEFT, RIGHT, TOP, BOTTOM)
+    BETTER_ENUM(Padding, int, SAME, VALID)
+    BETTER_ENUM(PoolingMode, int, MAX, AVERAGE, AVERAGE_TF)
+
+    struct Shape {
+        unsigned int batch,w,h,c;
+        
+        Shape(unsigned int _batch, unsigned int _w, unsigned int _h, unsigned int _c) {
+            batch = _batch;
+            w = _w;
+            h = _h;
+            c = _c;
+        }
+
+        public:
+            friend std::ostream& operator<<(std::ostream& out, const Shape& shape){
+                return out << "Shape(" << shape.batch << ", " << shape.w << ", " << shape.h << ", " << shape.c << ")";
+            }
+        
     };
 
-    enum Padding {
-        SAME,
-        VALID
-    };
+    typedef std::map<std::string, std::variant<int, std::string, Shape, Padding, PoolingMode>> Dict;
 
-    enum PoolingMode {
-        MAX,
-        AVERAGE,
-        AVERAGE_TF
-    };
 
     struct Size {
         unsigned int w,h;
@@ -28,7 +36,7 @@ namespace mtype {
             h = _h;
         }
     };
-
+    
     struct PaddingShape {
         unsigned int t,b,l,r;
 
