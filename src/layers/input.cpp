@@ -4,17 +4,16 @@
 namespace layer {
 
     class Input: public Layer {
-        Dict config;
+        Layer pre_layer;
         
         public:
-            Input(Shape input_shape) {
-                
-                this->config["output_shape"] = input_shape;
-                Layer::set_config(this->config);
+            Input(Shape input_shape): Layer(nullptr, false) {
+
+                Dict config;
+                config["output_shape"] = input_shape;
+                this->set_config(config);
             }
 
-            void inject(const arma::field<arma::cube> &input) {
-                Layer::set_output(input);
-            }
+            const char* classname() { return "Input";}
     };
 }

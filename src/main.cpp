@@ -4,8 +4,9 @@
 #include <iostream>
 #include <variant>
 #include <string>
-#include <chrono>
 #include <time.h>
+#include <json.hpp>
+#include <map>
 
 #include "nn_ops.h"
 #include "activation.h"
@@ -14,12 +15,14 @@
 #include "layers/input.cpp"
 #include "layers/conv2d.cpp"
 
+#include "model.h"
+
+using json = nlohmann::json;
 using namespace arma;
 using namespace ops;
 using namespace f;
 using namespace cv;
 using namespace layer;
-
 // template<class T3>
 // arma::Mat <T3> cvMat2armaMat(cv::Mat & cvMatIn) 
 // { 
@@ -65,35 +68,26 @@ int main() {
 
     clock_t tStart = clock();
 
-    layer::Input input = layer::Input(Shape(8, 256,256,3));
-    input.display_config();
-    input.inject(field);
+    layer::Input input(Shape(2, 16,16,3));
+    layer::Conv2d c1(&input, 16, 3, Padding::SAME, 1, Activation::relu);
+    layer::Conv2d c2(&c1, 32, 3, Padding::SAME, 1, Activation::sigmoid);
+    layer::Conv2d c3(&c2, 32, 3, Padding::VALID, 1, Activation::relu);
+    layer::Conv2d c4(&c3, 32, 3, Padding::VALID, 1, Activation::sigmoid);
 
-    layer::Conv2d c1 = layer::Conv2d(input, 16, 3, Padding::SAME, 1, Activation::relu);
-    c1.display_config();
-    c1.initialize();
-    c1.foward();
+    Model model(&c4);
 
-    layer::Conv2d c2 = layer::Conv2d(c1, 32, 3, Padding::SAME, 1, Activation::sigmoid);
-    c2.display_config();
-    c2.initialize();
-    c2.foward();    
+    model.summary();
     
-    layer::Conv2d c3 = layer::Conv2d(c2, 32, 3, Padding::SAME, 1, Activation::sigmoid);
-    c3.display_config();
-    c3.initialize();
-    c3.foward();
-
-    layer::Conv2d c4 = layer::Conv2d(c3, 32, 3, Padding::SAME, 1, Activation::sigmoid);
-    c4.display_config();
-    c4.initialize();
-    c4.foward();
-
-    layer::Conv2d c5 = layer::Conv2d(c4, 32, 3, Padding::SAME, 1, Activation::sigmoid);
-    c5.display_config();
-    c5.initialize();
-    c5.foward();
-
+    // model.predict(field);
     printf("Time taken: %.2fs\n", (double)(clock() - tStart)/CLOCKS_PER_SEC);
+    // std::ifstream i("/home/mxw/dev/notebook/weights.dat");
+
+    // json j_from_bson = json::from_bson(i);
+    // cout << j_from_bson["root"];
+
+    // json j;
+    // i >> j;
+    
+    // cout << j;
     return 0;
 }
