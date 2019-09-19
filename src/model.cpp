@@ -36,9 +36,60 @@ void Model::summary() {
 }
 
 
-arma::field<arma::cube> Model::predict(arma::field<arma::cube> input) {
-    (*this->layers.begin())->set_output(input);
-
+arma::field<arma::cube> &Model::predict(arma::field<arma::cube> input) {
+    this->layers[0]->set_output(input);
+    // (*this->layers.begin())->set_output(input);
+    // (*this->layers.begin())->get_output().print();
     for (auto it = ++this->layers.begin(); it != this->layers.end(); ++it)
         (*it)->foward();
+    
+    // std::get<arma::field<arma::cube>>(this->layers[1]->get_weights()[0]).print();
+    return (this->layers.back())->get_output();
+}
+
+void Model::load_weights(std::string path) {
+
+    std::ifstream input(path);
+    json j_from_bson = json::from_bson(input);
+    
+    int j = 1;
+    int count = 0;
+    wtype tmp;
+    
+    for (json::iterator it = j_from_bson["root"].begin(); it != j_from_bson["root"].end(); ++it) {
+         
+        if ((*it)[0].is_array()) {
+            Shape shape = this->layers[j]->get_attr<Shape>("kernel_shape");
+            arma::field<arma::cube> kernel(shape.batch);
+            Parser::parse_arma(it, &kernel, shape);
+            
+            tmp.push_back(kernel);
+        }
+        else {
+            std::vector<double> v;
+            for (json::iterator i = (*it).begin(); i != (*it).end(); ++i)
+                v.push_back(*i);
+            
+            tmp.push_back(arma::vec(v));
+        }
+        count++;
+        if (count == this->layers[j]->get_weights().size()) {
+
+            // std::get<arma::field<arma::cube>>(this->layers[j]->get_weights()[0]).print();
+            // std::get<arma::field<arma::cube>>(tmp[0]).print();
+            
+            this->layers[j]->set_weights(tmp);
+            j++;
+            if (this->layers.size() <= j) break;
+            while (!this->layers[j]->check_weights()) j++;
+            count = 0;
+            tmp.clear();
+        }
+    }
+
+
+}
+
+std::vector<Layer*> &Model::get_layers() {
+    return this->layers;
 }

@@ -56,7 +56,7 @@ namespace layer {
                 this->output = 
                     ops::NnOps::conv2d(
                         this->input, 
-                        this->kernel, 
+                        std::get<arma::field<arma::cube>>(this->get_weights()[0]), 
                         get_attr<Padding>("padding"),
                         get_attr<int>("stride")
                     );
@@ -64,7 +64,7 @@ namespace layer {
                 for (size_t i = 0; i < this->output.n_elem; i++) {
                     auto el = this->output(i);
                     for (size_t j = 0; j < el.n_slices; j++) 
-                        el.slice(j) += this->bias(j);
+                        el.slice(j) += std::get<arma::vec>(this->get_weights()[1])(j);
                     
                     this->output(i) = el;
                 }

@@ -14,7 +14,7 @@ namespace ops {
             }
 
             static double sigmoid(double value) {
-                return 1.0 / (1.0 + std::exp(value));
+                return 1.0 / (1.0 + std::exp(-value));
             }
             
     };

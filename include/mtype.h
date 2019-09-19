@@ -20,7 +20,7 @@ namespace mtype {
 
         public:
             friend std::ostream& operator<<(std::ostream& out, const Shape& shape){
-                return out << "Shape(" << shape.batch << ", " << shape.w << ", " << shape.h << ", " << shape.c << ")";
+                return out << "(" << shape.batch << ", " << shape.w << ", " << shape.h << ", " << shape.c << ")";
             }
         
     };

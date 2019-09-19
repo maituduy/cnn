@@ -27,7 +27,7 @@ namespace f {
         int left = comp ? a.n_rows + stride - b.n_rows: stride;
         int mid = comp ? b.n_rows - stride: a.n_rows - stride;
         int right = stride;
-
+    
         return arma::join_cols(
             a.head_rows(left), 
             a.tail_rows(mid) + b.head_rows(mid),

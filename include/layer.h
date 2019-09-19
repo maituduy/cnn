@@ -7,18 +7,19 @@
 
 using namespace mtype;
 
+typedef std::vector<std::variant<arma::field<arma::cube>, arma::vec>> wtype;
+
 namespace layer {
 
     class Layer {
         protected:
 
             Layer *pre_layer;
-            arma::field<arma::cube> input, kernel, output;
-            arma::Row<double> bias;
+            arma::field<arma::cube> input, output;
+            wtype weights;
             Dict config;
             bool has_weights= true;
 
-        
         public:
             Layer(){};
 
@@ -35,31 +36,26 @@ namespace layer {
                 Shape kernel_shape = this->get_attr<Shape>("kernel_shape");
                 Shape output_shape = this->get_attr<Shape>("output_shape");
 
-                kernel = arma::field<arma::cube>(kernel_shape.batch);
+                auto kernel = arma::field<arma::cube>(kernel_shape.batch);
 
                 for (size_t i = 0; i < kernel_shape.batch; i++) 
                     kernel(i) = arma::randu<arma::cube>(kernel_shape.w, kernel_shape.h, kernel_shape.c);
                 
-                this->kernel = kernel;
+                this->weights.push_back(kernel);
+                arma::vec v = arma::randu<arma::vec>(output_shape.c);
+                this->weights.push_back(v);
 
-                this->bias = bias.randu(output_shape.c);
             }
             
-            void set_kernel(arma::field<arma::cube> &kernel){
-                this->kernel = kernel;
-            };
-
-            void set_bias(arma::Row<double> &bias) {
-                this->bias = bias;
-            };
-
-            arma::field<arma::cube> &get_kernel() {
-                return this->kernel;
+            void set_weights(wtype &weights) {
+                this->weights = weights;
+                
             }
 
-            arma::Row<double> &get_bias() {
-                return this->bias;
+            wtype &get_weights() {
+                return this->weights;
             }
+            
             void display_config() {
                 std::cout << "{\n";
                 

@@ -4,7 +4,6 @@
 namespace layer {
 
     class Input: public Layer {
-        Layer pre_layer;
         
         public:
             Input(Shape input_shape): Layer(nullptr, false) {
