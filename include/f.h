@@ -14,7 +14,7 @@ namespace f {
             static arma::mat merge_rows(const arma::mat &a, const arma::mat &b, int stride=1);
             static arma::mat apply_conv2d_transpose_padding(const arma::mat &a, int padding);
             static arma::mat apply_conv2d_transpose_padding(const arma::mat &a, Position pos, int padding);
-            static mtype::Size get_output_size(const arma::mat &a, int kernel_size, Padding padding, int stride=1);
+            static mtype::Size get_output_size(int input_size, int kernel_size, Padding padding, int stride=1);
             static arma::mat conv2d_transpose(const arma::mat &a, const arma::mat &kernel, Padding padding = Padding::SAME, int stride=1);
     };
 

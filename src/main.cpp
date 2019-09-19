@@ -14,6 +14,9 @@
 #include "layer.h"
 #include "layers/input.cpp"
 #include "layers/conv2d.cpp"
+#include "layers/pool2d.cpp"
+#include "layers/conv2d_transpose.cpp"
+
 #include "parser.h"
 
 #include "model.h"
@@ -46,15 +49,18 @@ class Tictoc {
 
 int main() {    
     Tictoc tictoc;
-    
-    layer::Input input(Shape(10, 8,8,3));
-    layer::Conv2d c1(&input, 1, 3, Padding::SAME, 1, Activation::relu);
-    layer::Conv2d c2(&c1, 2, 3, Padding::SAME, 1, Activation::relu);
-    layer::Conv2d c3(&c2, 32, 3, Padding::VALID, 1, Activation::sigmoid);
-    layer::Conv2d c4(&c3, 32, 3, Padding::VALID, 1, Activation::sigmoid);
+    layer::Input input(Shape(10, 16,16,3));
+    layer::Conv2d c1(&input, 1, 3, Padding::SAME, 2, Activation::relu);
+    layer::Conv2d c2(&c1, 4, 3, Padding::SAME, 1, Activation::relu);
+    layer::Conv2dTranspose c3(&c2, 1, 5, Padding::SAME, 2, Activation::relu);
+    layer::Pooling2d c4(&c3, 2);
+    layer::Conv2d c5(&c4, 32, 3, Padding::VALID, 1, Activation::sigmoid);
+    layer::Pooling2d c6(&c5, 2, PoolingMode::AVERAGE_TF, Padding::VALID, 2);
+    layer::Conv2dTranspose c7(&c6, 1, 3, Padding::VALID, 1, Activation::sigmoid);
+    layer::Conv2d c8(&c7, 32, 3, Padding::VALID, 1, Activation::sigmoid);
     
     tictoc.start([&]() {
-        Model model(&c4);
+        Model model(&c8);
         // model.summary();
         model.load_weights("/home/mxw/dev/notebook/weights.dat");
         // std::get<arma::field<arma::cube>>(model.get_layers()[1]->get_weights()[0]).print();
@@ -65,7 +71,7 @@ int main() {
         json j_from_bson = json::from_bson(input);
 
         for (json::iterator it = j_from_bson.begin(); it != j_from_bson.end(); ++it) 
-            parser::Parser::parse_arma(it, &in, Shape(10,8,8,3));
+            parser::Parser::parse_arma(it, &in, Shape(10,16,16,3));
         
         auto output = model.predict(in);
         output(0).print();

@@ -2,11 +2,11 @@
 
 namespace layer {
 
-    class Conv2d: public Layer {
+    class Conv2dTranspose: public Layer {
         double (*activation)(double);
 
         public:
-            Conv2d( 
+            Conv2dTranspose( 
                 Layer *layer,
                 int n_filters, 
                 int kernel_size, 
@@ -20,7 +20,7 @@ namespace layer {
                 
                 Shape input_shape = std::get<Shape>(this->get_pre_layer()->get_config()["output_shape"]);
                 
-                int output_size = f::Common::get_output_size(input_shape.w, padding, kernel_size, stride);
+                int output_size = f::Conv2d_Transpose::get_output_size(input_shape.w, kernel_size, padding, stride).w;
                 
                 Shape output_shape = 
                     Shape(
@@ -48,7 +48,7 @@ namespace layer {
                 this->input = this->get_pre_layer()->get_output();
 
                 this->output = 
-                    ops::NnOps::conv2d(
+                    ops::NnOps::conv2d_transpose(
                         this->input, 
                         std::get<arma::field<arma::cube>>(this->get_weights()[0]), 
                         get_attr<Padding>("padding"),
@@ -70,6 +70,6 @@ namespace layer {
 
             }
 
-            const char* classname() { return "Conv2d";}
+            const char* classname() { return "Conv2dTranspose";}
     };
 }

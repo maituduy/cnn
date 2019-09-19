@@ -41,7 +41,7 @@ namespace ops {
     arma::field<cube> NnOps::conv2d_transpose(const arma::field<cube> &input, arma::field<cube> kernel, Padding padding, int stride) {
         arma::field<cube> result(input.n_elem);
         
-        mtype::Size output_size = f::Conv2d_Transpose::get_output_size(input(0).slice(0), kernel(0).n_rows, padding, stride);
+        mtype::Size output_size = f::Conv2d_Transpose::get_output_size(input(0).slice(0).n_rows, kernel(0).n_rows, padding, stride);
         
         for (size_t i = 0; i < input.n_elem; i++) {
             

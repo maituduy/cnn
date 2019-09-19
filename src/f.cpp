@@ -68,7 +68,7 @@ namespace f {
         
         bool pad_flag = ((int)(padding_size * 2) % 2 == 0) ? false : true;
         
-        Size output_size = Conv2d_Transpose::get_output_size(a, kernel.n_rows, padding, stride);
+        Size output_size = Conv2d_Transpose::get_output_size(a.n_rows, kernel.n_rows, padding, stride);
         arma::mat out = arma::mat(output_size.w, output_size.h);
         
         arma::field<arma::mat> tmp_rows(a.n_rows);
@@ -91,10 +91,10 @@ namespace f {
         return pad_flag ? tmp.submat(0, 0, tmp.n_rows - 2, tmp.n_cols - 2) : tmp;
     }
 
-    Size Conv2d_Transpose::get_output_size(const arma::mat &a, int kernel_size, Padding padding, int stride) {
+    Size Conv2d_Transpose::get_output_size(int input_size, int kernel_size, Padding padding, int stride) {
         return padding == +Padding::SAME ? 
-            Size(stride * a.n_rows, stride * a.n_cols) : 
-            Size(stride * a.n_rows + std::max(kernel_size - stride, 0), stride * a.n_cols + std::max(kernel_size - stride, 0));
+            Size(stride * input_size, stride * input_size) : 
+            Size(stride * input_size + std::max(kernel_size - stride, 0), stride * input_size + std::max(kernel_size - stride, 0));
     }
 
     // ****************************************END********************************************

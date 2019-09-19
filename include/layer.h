@@ -4,6 +4,9 @@
 #include "mtype.h"
 #include <string>
 #include <time.h>
+#include "activation.h"
+#include "f.h"
+#include "nn_ops.h"
 
 using namespace mtype;
 
@@ -42,8 +45,7 @@ namespace layer {
                     kernel(i) = arma::randu<arma::cube>(kernel_shape.w, kernel_shape.h, kernel_shape.c);
                 
                 this->weights.push_back(kernel);
-                arma::vec v = arma::randu<arma::vec>(output_shape.c);
-                this->weights.push_back(v);
+                this->weights.push_back(arma::zeros<arma::vec>(output_shape.c));
 
             }
             
