@@ -25,4 +25,5 @@ class Model{
         arma::field<arma::cube> &predict(arma::field<arma::cube> input);
         void load_weights(std::string path);
         std::vector<Layer*> &get_layers();
+        arma::field<arma::cube> get_input(std::string path);
 };

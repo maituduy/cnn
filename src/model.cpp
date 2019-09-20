@@ -10,12 +10,10 @@ Model::Model(Layer *output_layer) {
 void Model::separate() {
     Layer* last = output_layer;
     int i = 0;
-
     while (last) {
         this->layers.insert(this->layers.begin(), last);
         last = last->get_pre_layer();
     }
-
     // create names
     for (auto it = ++this->layers.begin(); it != this->layers.end(); ++it) {
         const char* class_name = (*it)->classname();
@@ -38,12 +36,9 @@ void Model::summary() {
 
 arma::field<arma::cube> &Model::predict(arma::field<arma::cube> input) {
     this->layers[0]->set_output(input);
-    // (*this->layers.begin())->set_output(input);
-    // (*this->layers.begin())->get_output().print();
-    for (auto it = ++this->layers.begin(); it != this->layers.end(); ++it)
+    for (auto it = ++this->layers.begin(); it != this->layers.end(); ++it) 
         (*it)->foward();
     
-    // std::get<arma::field<arma::cube>>(this->layers[1]->get_weights()[0]).print();
     return (this->layers.back())->get_output();
 }
 
@@ -59,6 +54,7 @@ void Model::load_weights(std::string path) {
     for (json::iterator it = j_from_bson["root"].begin(); it != j_from_bson["root"].end(); ++it) {
          
         if ((*it)[0].is_array()) {
+            std::cout << this->layers[j]->classname() << "\n";
             Shape shape = this->layers[j]->get_attr<Shape>("kernel_shape");
             arma::field<arma::cube> kernel(shape.batch);
             Parser::parse_arma(it, &kernel, shape);
@@ -92,4 +88,24 @@ void Model::load_weights(std::string path) {
 
 std::vector<Layer*> &Model::get_layers() {
     return this->layers;
+}
+
+arma::field<arma::cube> Model::get_input(std::string path) {
+    std::ifstream input(path);
+    json j_from_bson = json::from_bson(input);
+
+    int list[4];
+    int i = 0;
+    json shape = j_from_bson["shape"];
+    for (auto it = shape.begin(); it!=shape.end(); it++, i++)
+        list[i] = *it;
+
+    Shape input_shape(list[0], list[1], list[2], list[3]);
+
+    arma::field<arma::cube> in(input_shape.batch);
+
+    auto it = j_from_bson["input"].begin();
+    parser::Parser::parse_arma(it, &in, input_shape);
+        
+    return in;
 }

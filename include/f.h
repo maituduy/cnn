@@ -2,6 +2,7 @@
 
 #include "armadillo"
 #include "mtype.h"
+#include <initializer_list>
 
 using namespace arma;
 using namespace mtype;
@@ -26,6 +27,7 @@ namespace f {
             static int get_output_size(int input_size, Padding padding, int kernel_size, int stride);
             static double get_needed_pad(const arma::mat &a, int output_size, int kernel_size, int stride);
             static arma::mat apply_needed_pad(arma::mat a, double needed_pad);
+            static arma::field<arma::cube> concatenate(std::vector<arma::field<arma::cube>*> input);
     };
     
     class Pooling2D {

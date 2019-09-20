@@ -1,4 +1,3 @@
-#include "armadillo"
 #include "f.h"
 
 using namespace arma;
@@ -247,6 +246,27 @@ namespace f {
             a = Common::pad(a, PaddingShape(0,1,0,1));
         
         return a;
+    }
+
+    arma::field<arma::cube> concatenate(std::vector<arma::field<arma::cube>*> input) {
+        auto it = input.begin();
+        arma::field<arma::cube> result((*it)->n_elem);
+        arma::field<arma::cube*> mat(input.size(), (*it)->n_elem);
+
+        for (int i =0; it != input.end();it++,i++)
+            for (int j =0; j < (*it)->n_elem; j++)
+                mat(i,j) = &(*it)->at(j);
+
+
+        for (int j = 0; j < mat.n_cols; j++) {
+            arma::cube* tmp = mat(0,j);
+            for (int i=1; i < mat.n_rows; i++)
+                (*tmp) = arma::join_slices(*tmp, *mat(i,j));
+            result(j) = *tmp;
+        }
+        
+        return result;
+
     }
     // *********************************************END******************************************
     // *******************************************Common*****************************************

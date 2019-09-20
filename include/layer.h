@@ -18,7 +18,8 @@ namespace layer {
         protected:
 
             Layer *pre_layer;
-            arma::field<arma::cube> input, output;
+            arma::field<arma::cube>* input;
+            arma::field<arma::cube> output;
             wtype weights;
             Dict config;
             bool has_weights= true;
@@ -29,13 +30,17 @@ namespace layer {
             Layer(Layer *pre_layer, bool has_weights) {
                 this->pre_layer = pre_layer;
                 this->has_weights = has_weights;
+                if (pre_layer != nullptr) {
+                    this->input = &pre_layer->output;
+                    config["input_shape"] = pre_layer->get_attr<Shape>("output_shape");
+                }
             };
             
             virtual ~Layer(){};
             virtual void foward(){};
             virtual const char* classname() { return "Layer";}
 
-            void initialize() {
+            virtual void initialize() {
                 Shape kernel_shape = this->get_attr<Shape>("kernel_shape");
                 Shape output_shape = this->get_attr<Shape>("output_shape");
 
@@ -76,10 +81,6 @@ namespace layer {
 
             Dict &get_config() {
                 return config;
-            }
-
-            void set_config(const Dict &config) {
-                this->config = config;
             }
 
             arma::field<arma::cube> &get_output() {
