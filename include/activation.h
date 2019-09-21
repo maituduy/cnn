@@ -1,13 +1,14 @@
 #pragma once
 
 #include <armadillo>
+#include "mtype.h"
 
 using namespace arma;
 
 namespace ops {
     class Activation {
         public:
-            static void active(arma::field<cube> &input, double (*f)(double));
+            static void active(arma::field<cube> *input, mtype::Activation activation);
 
             static double relu(double value) {
                 return value >= 0 ? value: 0; 

@@ -26,34 +26,30 @@ namespace layer {
 
         public:
             Layer(){};
+            Layer(bool has_weights): has_weights(has_weights){};
 
-            Layer(Layer *pre_layer, bool has_weights) {
+            Layer *operator()(Layer *pre_layer) {
                 this->pre_layer = pre_layer;
-                this->has_weights = has_weights;
-                if (pre_layer != nullptr) {
-                    this->input = &pre_layer->output;
+                if (pre_layer != nullptr) {                
+                    this->input = &this->pre_layer->output;
                     config["input_shape"] = pre_layer->get_attr<Shape>("output_shape");
                 }
-            };
+                initialize_config();
+                initialize_weights();
+                
+                return this;
+            }
             
+            arma::field<arma::cube> &get_input() {
+                return *this->input;
+            }
             virtual ~Layer(){};
             virtual void foward(){};
             virtual const char* classname() { return "Layer";}
 
-            virtual void initialize() {
-                Shape kernel_shape = this->get_attr<Shape>("kernel_shape");
-                Shape output_shape = this->get_attr<Shape>("output_shape");
+            virtual void initialize_config(){};
+            virtual void initialize_weights(){};
 
-                auto kernel = arma::field<arma::cube>(kernel_shape.batch);
-
-                for (size_t i = 0; i < kernel_shape.batch; i++) 
-                    kernel(i) = arma::randu<arma::cube>(kernel_shape.w, kernel_shape.h, kernel_shape.c);
-                
-                this->weights.push_back(kernel);
-                this->weights.push_back(arma::zeros<arma::vec>(output_shape.c));
-
-            }
-            
             void set_weights(wtype &weights) {
                 this->weights = weights;
                 
@@ -81,6 +77,10 @@ namespace layer {
 
             Dict &get_config() {
                 return config;
+            }
+
+            void set_config(Dict &config) {
+                this->config = config;
             }
 
             arma::field<arma::cube> &get_output() {

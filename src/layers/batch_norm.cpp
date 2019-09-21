@@ -4,15 +4,9 @@ namespace layer {
     class BatchNormalization: public Layer {
         float epsilon = 1e-3;
         public:
-            BatchNormalization(
-                Layer* pre_layer
-            
-            ): Layer(pre_layer, true) {
-                config["output_shape"] = config["input_shape"];
-                initialize();
-            }
+            BatchNormalization(): Layer(true) {}
 
-            void initialize() {
+            void initialize_weights() {
                 // [gamma, beta, mean , variance]
                 int c = get_attr<Shape>("input_shape").c;
                 this->weights.push_back(arma::ones(c));
@@ -22,14 +16,11 @@ namespace layer {
 
             }
 
+            void initialize_config() {
+                config["output_shape"] = config["input_shape"];
+            }
+
             void foward() {
-                // 0.4966   0.5025   0.5023   0.5022   0.5022   0.5003   0.4961
-                // 0.4920   0.4953   0.4950   0.4950   0.4950   0.4925   0.4944
-                // 0.4931   0.4953   0.4951   0.4951   0.4951   0.4897   0.4868
-                // 0.4931   0.4953   0.4951   0.4951   0.4951   0.4896   0.4868
-                // 0.4931   0.4953   0.4950   0.4950   0.4950   0.4897   0.4869
-                // 0.4942   0.4969   0.4971   0.4971   0.4971   0.4922   0.4884
-                // 0.4894   0.4928   0.4926   0.4926   0.4926   0.4884   0.4856
                 this->output = *this->input;
                 
                 auto gamma = std::get<arma::vec>(this->weights[0]);

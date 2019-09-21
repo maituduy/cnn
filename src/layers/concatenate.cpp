@@ -4,23 +4,21 @@
 namespace layer {
     class Concatenate: public Layer {
         std::vector<arma::field<arma::cube>*> list;
+        std::initializer_list<Layer*> init_list;
         public:
-            Concatenate(
-                Layer* pre_layer,
-                std::initializer_list<Layer*> list
-            
-            ): Layer(pre_layer, false) {
-                
+            Concatenate(std::initializer_list<Layer*> list): Layer(false){init_list = list;};
+
+            void initialize_config() {
+                                
                 int out_channel = 0;
-                for (auto elem: list) {
+                for (auto elem: init_list) {
                     this->list.push_back(&(*elem).get_output());
                     out_channel += elem->get_attr<Shape>("output_shape").c;
                 }
-                auto it = list.begin();
+                auto it = init_list.begin();
                 Shape tmp = (*it)->get_attr<Shape>("output_shape");
                 tmp.c = out_channel;
                 config["output_shape"] = tmp;
-
             }
 
             void foward() {

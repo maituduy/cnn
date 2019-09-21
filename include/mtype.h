@@ -4,10 +4,11 @@
 
 namespace mtype {
     
-    BETTER_ENUM(Position, int, LEFT, RIGHT, TOP, BOTTOM)
-    BETTER_ENUM(Padding, int, SAME, VALID)
-    BETTER_ENUM(PoolingMode, int, MAX, AVERAGE, AVERAGE_TF)
-
+    BETTER_ENUM(Position, int, LEFT, RIGHT, TOP, BOTTOM);
+    BETTER_ENUM(Padding, int, SAME, VALID);
+    BETTER_ENUM(PoolingMode, int, MAX, AVERAGE, AVERAGE_TF);
+    BETTER_ENUM(Activation, int, SIGMOID, RELU, NONE);
+    
     struct Shape {
         unsigned int batch,w,h,c;
         

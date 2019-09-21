@@ -1,23 +1,48 @@
 #include "layer.h"
 
+using namespace mtype;
+
 namespace layer {
 
     class Conv2d: public Layer {
-        double (*activation)(double);
-
+        int n_filters, kernel_size;
+        Padding *padding;
+        int stride;
+        mtype::Activation *activation;
         public:
-            Conv2d( 
-                Layer *layer,
+            Conv2d(
                 int n_filters, 
                 int kernel_size, 
                 Padding padding = Padding::SAME,
                 int stride = 1, 
-                double (*activation)(double) = nullptr
+                mtype::Activation activation = mtype::Activation::NONE
                 
-            ): Layer(layer, true) {
+            ): Layer(true) {
+                this->n_filters = n_filters;
+                this->kernel_size = kernel_size;
+                this->padding = &padding;
+                this->stride = stride;
+                this->activation = &activation;
+            }
+
+            void initialize_weights() {
+                
+                Shape kernel_shape = this->get_attr<Shape>("kernel_shape");
+                Shape output_shape = this->get_attr<Shape>("output_shape");
+
+                auto kernel = arma::field<arma::cube>(kernel_shape.batch);
+
+                for (size_t i = 0; i < kernel_shape.batch; i++) 
+                    kernel(i) = arma::randu<arma::cube>(kernel_shape.w, kernel_shape.h, kernel_shape.c);
+                
+                this->weights.push_back(kernel);
+                this->weights.push_back(arma::zeros<arma::vec>(output_shape.c));
+            }
+            
+            void initialize_config() {
                 Shape input_shape = this->get_attr<Shape>("input_shape");
                 
-                int output_size = f::Common::get_output_size(input_shape.w, padding, kernel_size, stride);
+                int output_size = f::Common::get_output_size(input_shape.w, *padding, kernel_size, stride);
                 
                 Shape output_shape = 
                     Shape(
@@ -33,11 +58,8 @@ namespace layer {
                     Shape(n_filters, kernel_size, kernel_size, input_shape.c);
                 
                 config["stride"] = stride;
-                config["padding"] = padding;
-                this->activation = activation;
-
-                this->initialize();
-           }
+                config["padding"] = *padding;
+            }
 
             void foward() {
                 this->output = 
@@ -57,7 +79,7 @@ namespace layer {
                 }
                 
                 if (this->activation)
-                    ops::Activation::active(this->output, this->activation);
+                    ops::Activation::active(&(this->output), *this->activation);
             
                 this->set_output(this->output);
 
