@@ -3,7 +3,6 @@
 #include "armadillo"
 #include "mtype.h"
 #include <string>
-#include <time.h>
 #include "activation.h"
 #include "f.h"
 #include "nn_ops.h"

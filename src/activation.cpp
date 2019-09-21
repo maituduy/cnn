@@ -1,5 +1,3 @@
-#include <armadillo>
-
 #include "activation.h"
 
 using namespace arma;
