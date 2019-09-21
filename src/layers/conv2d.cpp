@@ -25,6 +25,18 @@ namespace layer {
                 this->activation = &activation;
             }
 
+            Conv2d(const Conv2d& layer): Layer(layer) {
+                this->n_filters = layer.n_filters;
+                this->kernel_size = layer.kernel_size;
+                this->padding = layer.padding;
+                this->stride = layer.stride;
+                this->activation = layer.activation;
+            }
+
+            Conv2d* clone() const {
+                return new Conv2d(*this);
+            }
+
             void initialize_weights() {
                 
                 Shape kernel_shape = this->get_attr<Shape>("kernel_shape");
@@ -86,5 +98,6 @@ namespace layer {
             }
 
             const char* classname() { return "Conv2d";}
+                
     };
 }

@@ -5,6 +5,11 @@ namespace layer {
         float epsilon = 1e-3;
         public:
             BatchNormalization(): Layer(true) {}
+            BatchNormalization(const BatchNormalization& layer): Layer(layer) {}
+            
+            BatchNormalization* clone() const {
+                return new BatchNormalization(*this);
+            }
 
             void initialize_weights() {
                 // [gamma, beta, mean , variance]

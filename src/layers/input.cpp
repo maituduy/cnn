@@ -11,6 +11,12 @@ namespace layer {
                 this->pre_layer = nullptr;
             }
 
+            Input(const Input& layer): Layer(layer) {}
+
+            Input* clone() const {
+                return new Input(*this);
+            }
+            
             const char* classname() { return "Input";}
     };
 }

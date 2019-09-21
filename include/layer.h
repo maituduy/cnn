@@ -28,6 +28,7 @@ namespace layer {
             Layer(bool has_weights): has_weights(has_weights){};
 
             Layer *operator()(Layer *pre_layer) {
+                
                 this->pre_layer = pre_layer;
                 if (pre_layer != nullptr) {                
                     this->input = &this->pre_layer->output;
@@ -35,13 +36,13 @@ namespace layer {
                 }
                 initialize_config();
                 initialize_weights();
-                
-                return this;
+                return this->clone();
             }
             
             arma::field<arma::cube> &get_input() {
                 return *this->input;
             }
+            
             virtual ~Layer(){};
             virtual void foward(){};
             virtual const char* classname() { return "Layer";}
@@ -108,5 +109,17 @@ namespace layer {
                 this->config[name] = value;
             }
 
+            Layer(const Layer &layer){
+                this->pre_layer = layer.pre_layer;
+                this->input = layer.input;
+                this->output = layer.output;
+                this->weights = layer.weights;
+                this->config = layer.config;
+                this->has_weights = layer.has_weights;
+            };
+
+            virtual Layer* clone() const {
+                return new Layer(*this);
+            }
     };
 }

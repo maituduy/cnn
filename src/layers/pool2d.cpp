@@ -21,6 +21,17 @@ namespace layer {
                 this->stride = stride;
             }
 
+            Pooling2d(const Pooling2d& layer): Layer(layer) {
+                this->kernel_size = layer.kernel_size;
+                this->pooling_mode = layer.pooling_mode;
+                this->padding = layer.padding;
+                this->stride = layer.stride;
+            }
+
+            Pooling2d* clone() const {
+                return new Pooling2d(*this);
+            }
+
             void initialize_config() {
                 Shape input_shape = this->get_attr<Shape>("input_shape");
                 
