@@ -2,20 +2,17 @@
 #include <armadillo>
 #include <opencv2/opencv.hpp>
 #include <iostream>
-#include <variant>
-#include <string>
 #include <time.h>
 #include <json.hpp>
-#include <map>
 
 #include "nn_ops.h"
 #include "f.h"
-#include "layer.h"
-#include "layers/input.cpp"
-#include "layers/conv2d.cpp"
-#include "layers/pool2d.cpp"
-#include "layers/conv2d_transpose.cpp"
-#include "layers/batch_norm.cpp"
+
+#include "layers/input.h"
+#include "layers/conv2d.h"
+#include "layers/pool2d.h"
+#include "layers/conv2d_transpose.h"
+#include "layers/batch_norm.h"
 
 #include "parser.h"
 
@@ -23,8 +20,6 @@
 
 using json = nlohmann::json;
 using namespace arma;
-using namespace ops;
-using namespace f;
 using namespace cv;
 using namespace layer;
 using namespace parser;
@@ -41,17 +36,9 @@ class Tictoc {
         };
 };
 
-class A {
-    int a;
-    public:
-        A() {
-            std::cout << 111;
-        };
-};
-
 int main() {
-
     Shape input_shape(10, 16,16,3);
+    
     Model *model = new Model();
     model
         ->add(layer::Input(input_shape))
@@ -67,13 +54,11 @@ int main() {
         ->add(layer::BatchNormalization())
         ->separate()
     ;
-
-    model->separate();
-    model->load_weights("/home/mxw/dev/notebook/weights.dat");
+    // model->summary();
+    // model->load_weights("/home/mxw/dev/notebook/weights.dat");
     auto in = model->get_input("/home/mxw/dev/notebook/input.dat");
-    std::cout << "??";
     auto output = model->predict(in);
-    output(0).slice(31).print();
+    output.print();
     
     
     return 0;

@@ -248,7 +248,7 @@ namespace f {
         return a;
     }
 
-    arma::field<arma::cube> concatenate(std::vector<arma::field<arma::cube>*> input) {
+    arma::field<arma::cube> Common::concatenate(std::vector<arma::field<arma::cube>*> input) {
         auto it = input.begin();
         arma::field<arma::cube> result((*it)->n_elem);
         arma::field<arma::cube*> mat(input.size(), (*it)->n_elem);

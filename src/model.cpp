@@ -1,15 +1,13 @@
 #include "model.h"
-#include "layers/input.cpp"
 
 Model::Model(){};
 
 Model::Model(Layer *output_layer) {
     this->output_layer = output_layer;
-    // Model::separate();
 };
 
 void Model::separate() {
-    Layer* last = output_layer;
+    Layer* last = this->output_layer;
     int i = 0;
     while (last) {
         this->layers.insert(this->layers.begin(), last);
@@ -30,7 +28,6 @@ void Model::separate() {
 }
 
 void Model::summary() {
-    std::cout << this->output_layer << "\n";
     for (auto it = ++this->layers.begin(); it != this->layers.end(); ++it)
         (*it)->display_config();
 }
@@ -38,9 +35,13 @@ void Model::summary() {
 
 arma::field<arma::cube> &Model::predict(arma::field<arma::cube> input) {
     this->layers[0]->set_output(input);
-    for (auto it = ++this->layers.begin(); it != this->layers.end(); ++it)  {
-        (*it)->foward();
+    for (int i=1; i< this->layers.size(); i++) {
+        this->layers[i]->foward();
+    // for (auto it = ++this->layers.begin(); it != this->layers.end(); ++it)  {
+    //     std::cout << 1;
+    //     (*it)->foward();
     }
+    std::cout<<"chay tiep o";
         
     return (this->layers.back())->get_output();
 }
@@ -72,10 +73,6 @@ void Model::load_weights(std::string path) {
         }
         count++;
         if (count == this->layers[j]->get_weights().size()) {
-
-            // std::get<arma::field<arma::cube>>(this->layers[j]->get_weights()[0]).print();
-            // std::get<arma::field<arma::cube>>(tmp[0]).print();
-            
             this->layers[j]->set_weights(tmp);
             j++;
             if (this->layers.size() <= j) break;
@@ -113,11 +110,13 @@ arma::field<arma::cube> Model::get_input(std::string path) {
 }
 
 Model *Model::add(const Layer &tmp_layer) {
-
-    if (this->output_layer)
-        this->output_layer = tmp_layer.clone()->operator()(this->output_layer);
+    auto tmp = tmp_layer.clone();
+    if (this->output_layer != nullptr) 
+        this->output_layer = tmp->operator()(this->output_layer);
+        
     else 
-        this->output_layer = tmp_layer.clone();
+        this->output_layer = tmp;
+
     return this;
 }
 

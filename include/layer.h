@@ -109,7 +109,7 @@ namespace layer {
                 this->config[name] = value;
             }
 
-            Layer(const Layer &layer){
+            Layer(const Layer &layer) {
                 this->pre_layer = layer.pre_layer;
                 this->input = layer.input;
                 this->output = layer.output;
