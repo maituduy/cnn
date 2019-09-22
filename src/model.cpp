@@ -112,17 +112,23 @@ arma::field<arma::cube> Model::get_input(std::string path) {
     return in;
 }
 
-Model &Model::add(const Layer &tmp_layer) {
-    // this->output_layer->display_config();
-    // std::cout << tmp_layer;
-    // layer::Input k(tmp_layer);
-    
-    // std::cout << k.classname();
-    // this->output_layer->display_config();
-    // std::cout << this->output_layer->get_pre_layer()->classname() << " " << this->output_layer << "\n";
-    
-    // std::cout << this->output_layer;
-    // this->output_layer->display_config();
-    // this->output_layer->get_pre_layer()->get_config();
-    return *this;
+Model *Model::add(const Layer &tmp_layer) {
+
+    if (this->output_layer)
+        this->output_layer = tmp_layer.clone()->operator()(this->output_layer);
+    else 
+        this->output_layer = tmp_layer.clone();
+    return this;
+}
+
+Model *Model::sign(std::string id) {
+    this->ids[id] = this->output_layer;
+    return this;
+}
+
+Layer *Model::get(std::string id) {
+    if (this->ids.find(id) == this->ids.end())
+        throw "ID not found";
+
+    return this->ids[id];
 }

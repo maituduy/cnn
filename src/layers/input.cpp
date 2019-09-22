@@ -8,6 +8,7 @@ namespace layer {
         public:
             Input(Shape input_shape): Layer(false) {
                 config["input_shape"] = config["output_shape"] = input_shape;
+                std::cout << "ok";
                 this->pre_layer = nullptr;
             }
 
