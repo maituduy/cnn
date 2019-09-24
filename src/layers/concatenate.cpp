@@ -1,18 +1,21 @@
 #include "concatenate.h"
 
 namespace layer {
-    Concatenate::Concatenate(std::initializer_list<Layer*> list): Layer(false){init_list = list;};
+    Concatenate::Concatenate(const std::initializer_list<Layer*>& list): Layer(false) {
+        init_list = list;
+    }
 
     Concatenate::Concatenate(const Concatenate& layer): Layer(layer) {
         this->list = layer.list;
         this->init_list = layer.init_list;
     }
+
     Layer* Concatenate::clone() const{
         return new Concatenate(*this);
     }
 
     void Concatenate::initialize_config() {
-                                
+
         int out_channel = 0;
         for (auto elem: init_list) {
             this->list.push_back(&(*elem).get_output());

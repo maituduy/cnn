@@ -5,16 +5,16 @@ namespace layer {
 
     class Pooling2d: public Layer {
         int kernel_size;
-        PoolingMode *pooling_mode;
-        Padding *padding;
+        PoolingMode pooling_mode;
+        Padding padding;
         int stride;
 
         public:
             Pooling2d(
                 int kernel_size,
                 PoolingMode pooling_mode = PoolingMode::MAX,
-                Padding padding = Padding::SAME,
-                int stride = 1
+                Padding padding = Padding::VALID,
+                int stride = 2
             );
 
             Pooling2d(const Pooling2d& layer);

@@ -63,7 +63,7 @@ namespace f {
 
     arma::mat Conv2d_Transpose::conv2d_transpose(const arma::mat &a, const arma::mat &kernel, Padding padding, int stride) {
         
-        float padding_size = padding == +Padding::SAME ? (float)(kernel.n_rows - stride)/2 : 0; 
+        float padding_size = padding == Padding::SAME ? (float)(kernel.n_rows - stride)/2 : 0;
         
         bool pad_flag = ((int)(padding_size * 2) % 2 == 0) ? false : true;
         
@@ -91,7 +91,7 @@ namespace f {
     }
 
     Size Conv2d_Transpose::get_output_size(int input_size, int kernel_size, Padding padding, int stride) {
-        return padding == +Padding::SAME ? 
+        return padding == Padding::SAME ?
             Size(stride * input_size, stride * input_size) : 
             Size(stride * input_size + std::max(kernel_size - stride, 0), stride * input_size + std::max(kernel_size - stride, 0));
     }
@@ -104,7 +104,7 @@ namespace f {
     // ***************************************BEGIN**********************************************
 
     double Pooling2D::pool_sub(const arma::mat &a, PoolingMode pool_mode) {
-        return (pool_mode == +PoolingMode::MAX) ? a.max(): arma::mean(arma::mean(a));
+        return (pool_mode == PoolingMode::MAX) ? a.max(): arma::mean(arma::mean(a));
     }
 
     arma::mat Pooling2D::pool(arma::mat a, int pooling_size, 
@@ -116,7 +116,7 @@ namespace f {
         
         int min_x, min_y, max_x, max_y;
 
-        if (padding == +Padding::SAME) {
+        if (padding == Padding::SAME) {
             a = Common::apply_needed_pad(a, needed_pad);
 
             min_x = min_y = (int)needed_pad;
@@ -141,7 +141,7 @@ namespace f {
                     int end_x = i + pooling_size - 1;
                     int end_y = j + pooling_size - 1;
 
-                    if (pool_mode == +PoolingMode::AVERAGE_TF || pool_mode == +PoolingMode::MAX) {
+                    if (pool_mode == PoolingMode::AVERAGE_TF || pool_mode == PoolingMode::MAX) {
                         if (start_x < min_x) start_x = min_x;
                         if (start_y < min_y) start_y = min_y;
                         if (end_x > max_x) end_x = max_x;
@@ -167,6 +167,45 @@ namespace f {
     // *****************************************END**********************************************
     // ************************************Max_Pooling2d*****************************************
 
+    // ****************************************Activation****************************************
+    // *******************************************BEGIN******************************************
+
+    void Activation::active(arma::field<arma::cube> *x, Func activation) {
+        double (*f)(double);
+        switch (activation) {
+            case Func::RELU:
+                f = Activation::relu;
+                break;
+
+            case Func::SIGMOID:
+                f = Activation::sigmoid;
+                break;
+
+            default:
+                f = nullptr;
+                break;
+        }
+        if (f) {
+            for (int i=0; i < x->n_elem; i++)
+                x->at(i).transform([&](double val) {
+                    return f(val);
+                });
+        }
+
+    }
+
+    double Activation::relu(double value) {
+        return value >= 0 ? value: 0;
+    }
+
+    double Activation::sigmoid(double value) {
+        return 1.0 / (1.0 + std::exp(-value));
+    }
+
+    // *******************************************END********************************************
+    // ****************************************Activation****************************************
+
+
     // *******************************************Conv2d*****************************************
     // *******************************************BEGIN******************************************
 
@@ -175,7 +214,7 @@ namespace f {
 
         double needed_pad = Common::get_needed_pad(a, output_size, kernel.n_rows, stride);
 
-        if (padding == +Padding::SAME) 
+        if (padding == Padding::SAME)
             a = Common::apply_needed_pad(a, needed_pad);
 
         int index = 0;
@@ -230,7 +269,7 @@ namespace f {
     }
 
     int Common::get_output_size(int input_size, Padding padding, int kernel_size, int stride) {
-        return padding == +Padding::SAME ? 
+        return padding == Padding::SAME ?
                 ceil((float)input_size / stride) : 
                 (input_size - kernel_size) / stride + 1;
     }
@@ -252,6 +291,7 @@ namespace f {
         auto it = input.begin();
         arma::field<arma::cube> result((*it)->n_elem);
         arma::field<arma::cube*> mat(input.size(), (*it)->n_elem);
+//        std::cout << Common::get_shape(*input[0]) << " " << Common::get_shape(*input[1]);
 
         for (int i =0; it != input.end();it++,i++)
             for (int j =0; j < (*it)->n_elem; j++)
@@ -267,6 +307,10 @@ namespace f {
         
         return result;
 
+    }
+
+    Shape Common::get_shape(arma::field<arma::cube> &a) {
+        return Shape(a.n_elem, a(0).n_rows, a(0).n_cols, a(0).n_slices);
     }
     // *********************************************END******************************************
     // *******************************************Common*****************************************

@@ -7,29 +7,27 @@ namespace layer {
         int kernel_size, 
         Padding padding,
         int stride, 
-        mtype::Activation activation
+        Func activation
+
     ): Layer(true) {
         
         this->n_filters = n_filters;
         this->kernel_size = kernel_size;
-        this->padding = &padding;
+        this->padding = padding;
         this->stride = stride;
-        this->activation = &activation;
+        this->activation = activation;
     }
     
     Conv2dTranspose::Conv2dTranspose(const Conv2dTranspose& layer): Layer(layer) {
-        std::cout << layer.kernel_size<<"\n";
         this->n_filters = layer.n_filters;
         this->kernel_size = layer.kernel_size;
         this->padding = layer.padding;
         this->stride = layer.stride;
         this->activation = layer.activation;
-        // std::cout << *layer.activation;
         
     }
 
     Layer* Conv2dTranspose::clone() const {
-        std::cout << "clone\n";
         return new Conv2dTranspose(*this);
     }
 
@@ -50,7 +48,7 @@ namespace layer {
     void Conv2dTranspose::initialize_config() {
         
         Shape input_shape = this->get_attr<Shape>("input_shape");
-        int output_size = f::Conv2d_Transpose::get_output_size(input_shape.w, kernel_size, *padding, stride).w;
+        int output_size = f::Conv2d_Transpose::get_output_size(input_shape.w, kernel_size, padding, stride).w;
         
         Shape output_shape = 
             Shape(
@@ -66,8 +64,7 @@ namespace layer {
             Shape(n_filters, kernel_size, kernel_size, input_shape.c);
         
         config["stride"] = stride;
-        config["padding"] = *padding;
-        this->activation = activation;
+        config["padding"] = padding;
     }
 
     void Conv2dTranspose::foward() {
@@ -86,7 +83,7 @@ namespace layer {
             
             this->output(i) = el;
         }
-        ops::Activation::active(&this->output, *this->activation);
+        f::Activation::active(&this->output, this->activation);
         
         this->set_output(this->output);
 

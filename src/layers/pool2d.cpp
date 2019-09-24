@@ -9,8 +9,8 @@ namespace layer {
         int stride
     ): Layer(false) {
         this->kernel_size = kernel_size;
-        this->pooling_mode = &pooling_mode;
-        this->padding = &padding;
+        this->pooling_mode = pooling_mode;
+        this->padding = padding;
         this->stride = stride;
     }
 
@@ -28,7 +28,7 @@ namespace layer {
     void Pooling2d::initialize_config() {
         Shape input_shape = this->get_attr<Shape>("input_shape");
         
-        int output_size = f::Common::get_output_size(input_shape.w, *padding, kernel_size, stride);
+        int output_size = f::Common::get_output_size(input_shape.w, padding, kernel_size, stride);
         
         Shape output_shape = 
             Shape(
@@ -42,8 +42,8 @@ namespace layer {
         config["output_shape"] = output_shape;
         config["kernel_size"] = kernel_size;
         config["stride"] = stride;
-        config["padding"] = *padding;
-        config["pooling_mode"] = *pooling_mode;
+        config["padding"] = padding;
+        config["pooling_mode"] = pooling_mode;
     }
 
     void Pooling2d::foward() {

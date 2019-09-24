@@ -1,15 +1,14 @@
 #pragma once
 #include "layer.h"
-#include "activation.h"
 
 namespace layer {
 
     class Conv2dTranspose: public Layer {
 
         int n_filters, kernel_size;
-        Padding *padding;
+        Padding padding;
         int stride;
-        mtype::Activation *activation;
+        Func activation;
         
         public:
             Conv2dTranspose(
@@ -17,7 +16,7 @@ namespace layer {
                 int kernel_size, 
                 Padding padding = Padding::SAME,
                 int stride = 1, 
-                mtype::Activation activation = mtype::Activation::NONE
+                Func activation = Func::NONE
                 
             );
             Conv2dTranspose(const Conv2dTranspose& layer);

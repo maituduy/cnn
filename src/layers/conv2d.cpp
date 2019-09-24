@@ -7,13 +7,13 @@ namespace layer {
         int kernel_size, 
         Padding padding,
         int stride, 
-        mtype::Activation activation
+        Func activation
     ): Layer(true) {
         this->n_filters = n_filters;
         this->kernel_size = kernel_size;
-        this->padding = &padding;
+        this->padding = padding;
         this->stride = stride;
-        this->activation = &activation;
+        this->activation = activation;
     }
 
     Conv2d::Conv2d(const Conv2d& layer): Layer(layer) {
@@ -46,7 +46,7 @@ namespace layer {
     void Conv2d::initialize_config() {
         Shape input_shape = this->get_attr<Shape>("input_shape");
         
-        int output_size = f::Common::get_output_size(input_shape.w, *padding, kernel_size, stride);
+        int output_size = f::Common::get_output_size(input_shape.w, padding, kernel_size, stride);
         
         Shape output_shape = 
             Shape(
@@ -62,7 +62,7 @@ namespace layer {
             Shape(n_filters, kernel_size, kernel_size, input_shape.c);
         
         config["stride"] = stride;
-        config["padding"] = *padding;
+        config["padding"] = padding;
     }
 
     void Conv2d::foward() {
@@ -81,7 +81,7 @@ namespace layer {
             
             this->output(i) = el;
         }
-        ops::Activation::active(&(this->output), *this->activation);
+        f::Activation::active(&(this->output), this->activation);
     
         this->set_output(this->output);
 

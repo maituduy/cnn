@@ -1,0 +1,4 @@
+/usr/local/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_COMPILER=/opt/rh/devtoolset-7/root/usr/bin/c++ -G "CodeBlocks - Unix Makefiles" /tmp/tmp.ISvdDmI4a7
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /tmp/tmp.ISvdDmI4a7/cmake-build-debug

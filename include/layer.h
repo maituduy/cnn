@@ -3,7 +3,6 @@
 #include "armadillo"
 #include "mtype.h"
 #include <string>
-#include "activation.h"
 #include "f.h"
 #include "nn_ops.h"
 
@@ -16,7 +15,7 @@ namespace layer {
     class Layer {
         protected:
 
-            Layer *pre_layer;
+            Layer *pre_layer = nullptr;
             arma::field<arma::cube>* input;
             arma::field<arma::cube> output;
             wtype weights;
@@ -28,21 +27,25 @@ namespace layer {
             Layer(bool has_weights): has_weights(has_weights){};
 
             Layer *operator()(Layer *pre_layer) {
-                
-                this->pre_layer = pre_layer;
-                if (pre_layer != nullptr) {                
-                    this->input = &this->pre_layer->output;
-                    config["input_shape"] = pre_layer->get_attr<Shape>("output_shape");
+                auto tmp = this;
+
+                while (tmp->pre_layer != nullptr) {
+                    tmp = tmp->pre_layer;
                 }
-                initialize_config();
-                initialize_weights();
+
+                tmp->pre_layer = pre_layer;
+
                 return this->clone();
             }
             
             arma::field<arma::cube> &get_input() {
                 return *this->input;
             }
-            
+
+            arma::field<arma::cube> set_input(arma::field<arma::cube> &output) {
+                this->input = &output;
+            }
+
             virtual ~Layer(){};
             virtual void foward(){};
             virtual const char* classname() { return "Layer";}
@@ -118,8 +121,21 @@ namespace layer {
                 this->has_weights = layer.has_weights;
             };
 
-            virtual Layer* clone() const {
+            [[nodiscard]] virtual Layer* clone() const {
                 return new Layer(*this);
+            }
+
+
+            virtual void operator<<(Layer *layer) {
+                auto tmp = this;
+
+                while (tmp->pre_layer != nullptr) {
+                    tmp = tmp->pre_layer;
+                }
+                tmp->operator()(layer);
+            }
+
+            virtual void sync() {
             }
     };
 }

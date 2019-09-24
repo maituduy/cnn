@@ -1,28 +1,14 @@
 #include <iostream>
-#include <armadillo>
-#include <opencv2/opencv.hpp>
-#include <iostream>
 #include <time.h>
 #include <json.hpp>
-
-#include "nn_ops.h"
-#include "f.h"
-
-#include "layers/input.h"
-#include "layers/conv2d.h"
-#include "layers/pool2d.h"
-#include "layers/conv2d_transpose.h"
-#include "layers/batch_norm.h"
-
+#include "armadillo"
 #include "parser.h"
-
-#include "model.h"
+#include "u4.h"
 
 using json = nlohmann::json;
 using namespace arma;
-using namespace cv;
-using namespace layer;
 using namespace parser;
+using namespace model_zoo;
 
 class Tictoc {
     public:
@@ -37,29 +23,41 @@ class Tictoc {
 };
 
 int main() {
-    Shape input_shape(10, 16,16,3);
-    
-    Model *model = new Model();
-    model
-        ->add(layer::Input(input_shape))
-        ->add(layer::Conv2d(1, 3, Padding::SAME, 2, mtype::Activation::RELU))
-        ->add(layer::Conv2d(4, 3, Padding::SAME, 1, mtype::Activation::RELU))
-        ->add(layer::Conv2dTranspose(1, 5, Padding::SAME, 2, mtype::Activation::RELU))
-        ->add(layer::Pooling2d(2))
-        ->add(layer::Conv2d (32, 3, Padding::VALID, 1, mtype::Activation::SIGMOID))
-        ->add(layer::Pooling2d(2, PoolingMode::AVERAGE_TF, Padding::VALID, 2))
-        ->add(layer::BatchNormalization())
-        ->add(layer::Conv2dTranspose(1, 3, Padding::VALID, 1, mtype::Activation::SIGMOID))
-        ->add(layer::Conv2d(32, 3, Padding::VALID, 1, mtype::Activation::SIGMOID))
-        ->add(layer::BatchNormalization())
-        ->separate()
-    ;
-    // model->summary();
-    // model->load_weights("/home/mxw/dev/notebook/weights.dat");
-    auto in = model->get_input("/home/mxw/dev/notebook/input.dat");
+    Shape input_shape(5, 32,32,1);
+    auto u4 = new U4(input_shape, 2);
+    auto model = u4->get();
+
+    model->load_weights("../data/weights.dat");
+    auto in = Parser::get_input("../data/input.dat");
+
     auto output = model->predict(in);
-    output.print();
-    
-    
+    output(0).slice(0).print();
+
+//    example
+//    Shape input_shape(10, 16,16,3);
+//    layer::Input ip(input_shape);
+//    auto *model = new Model();
+//    model
+//        ->add(layer::Input(input_shape))
+//        ->add(layer::Conv2d(1, 3, Padding::SAME, 2, Func::RELU))
+//        ->add(layer::Conv2d(4, 3, Padding::SAME, 1, Func::RELU))
+//        ->add(layer::Conv2dTranspose(1, 5, Padding::SAME, 2, Func::NONE))
+//        ->add(layer::Activation(Func::RELU))
+//        ->add(layer::Pooling2d(2))
+//        ->add(layer::Conv2d (32, 3, Padding::VALID, 1, Func::SIGMOID))
+//        ->add(layer::Pooling2d(2, PoolingMode::AVERAGE_TF, Padding::VALID, 2))
+//        ->add(layer::BatchNormalization())
+//        ->add(layer::Conv2dTranspose(1, 3, Padding::VALID, 1, Func::SIGMOID))
+//        ->add(layer::Conv2d(32, 3, Padding::VALID, 1, Func::SIGMOID))
+//        ->add(layer::BatchNormalization())
+//        ->separate()
+//    ;
+//    model->summary();
+//    model->load_weights("../data/weights.dat");
+//    auto in = model->get_input("../data/input.dat");
+//
+//    auto output = model->predict(in);
+//    output(0).slice(0).print();
+
     return 0;
 }

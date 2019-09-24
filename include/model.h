@@ -5,6 +5,7 @@
 #include <vector>
 #include "armadillo"
 #include <map>
+#include <any>
 #include <json.hpp>
 
 using json = nlohmann::json;
@@ -24,10 +25,10 @@ class Model{
         void separate();
         void summary();
         arma::field<arma::cube> &predict(arma::field<arma::cube> input);
-        void load_weights(std::string path);
+        void load_weights(const std::string& path);
         std::vector<Layer*> &get_layers();
-        arma::field<arma::cube> get_input(std::string path);
-        Model *add(const Layer &layer);
-        Model *sign(std::string);
-        Layer *get(std::string);
+        Model *add(const Layer&);
+        Model *add(Layer*);
+        Model *sign(const std::string&);
+        Layer *get(const std::string&);
 };
