@@ -1,3 +1,0 @@
-ToolSet: 1.0 (remote)Options: 
-
-Options:-DCMAKE_CXX_COMPILER=/opt/rh/devtoolset-7/root/usr/bin/c++

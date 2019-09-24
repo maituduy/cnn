@@ -1,3 +1,0 @@
-/tmp/tmp.ISvdDmI4a7/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/tmp/tmp.ISvdDmI4a7/cmake-build-debug/CMakeFiles/edit_cache.dir
-/tmp/tmp.ISvdDmI4a7/cmake-build-debug/CMakeFiles/medical-cnn.dir
