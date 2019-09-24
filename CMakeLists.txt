@@ -15,7 +15,7 @@ set(CMAKE_CXX_FLAGS "-O2 -larmadillo")
 
 file(GLOB SOURCES "src/*.cpp" "src/layers/*.cpp" "src/model_zoo/*.cpp")
 
-add_executable(medical-cnn ${SOURCES} src/layers/add.h src/layers/add.cpp)
+add_executable(medical-cnn ${SOURCES})
 
 target_link_libraries(medical-cnn ${ARMADILLO_LIBRARIES})
 target_link_libraries(medical-cnn ${OpenCV_LIBS})
