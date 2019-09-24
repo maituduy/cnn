@@ -1,7 +1,4 @@
 #include "nn_ops.h"
-#include "f.h"
-#include "mtype.h"
-#include "armadillo"
 
 using namespace arma;
 using namespace f;

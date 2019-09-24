@@ -28,6 +28,7 @@ namespace f {
             static double get_needed_pad(const arma::mat &a, int output_size, int kernel_size, int stride);
             static arma::mat apply_needed_pad(arma::mat a, double needed_pad);
             static arma::field<arma::cube> concatenate(std::vector<arma::field<arma::cube>*> input);
+            static Shape get_shape(arma::field<arma::cube> &a);
     };
     
     class Pooling2D {
@@ -43,5 +44,13 @@ namespace f {
         public:
             static arma::mat conv2d(arma::mat a, const arma::mat &kernel, Padding padding = Padding::SAME, int stride=1);
             static double dot_sum(arma::mat a, const arma::mat &kernel);
+    };
+
+    class Activation {
+        public:
+            static void active(arma::field<cube> *input, Func activation);
+            static double relu(double value);
+            static double sigmoid(double value);
+
     };
 }

@@ -11,6 +11,7 @@ namespace parser {
     class Parser {
         public:
             static void parse_arma(json::iterator &json, arma::field<arma::cube> *kernel, Shape shape);
+            static arma::field<arma::cube> get_input(const std::string& path);
     };
 
 }

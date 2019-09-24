@@ -1,15 +1,19 @@
-#include "armadillo"
-#include "layer.h"
+#include "input.h"
 
 namespace layer {
 
-    class Input: public Layer {
-        
-        public:
-            Input(Shape input_shape): Layer(nullptr, false) {
-                config["input_shape"] = config["output_shape"] = input_shape;
-            }
+    Input::Input(Shape input_shape): Layer(false) {
+        config["input_shape"] = config["output_shape"] = input_shape;
+        this->pre_layer = nullptr;
+    }
 
-            const char* classname() { return "Input";}
-    };
+    Input::Input(const Input& layer): Layer(layer) {}
+
+    Layer* Input::clone() const {
+        return new Input(*this);
+    }
+            
+    const char* Input::classname() { 
+        return "Input";
+    }
 }

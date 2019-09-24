@@ -1,13 +1,35 @@
 #pragma once
 #include <variant>
-#include "enum.h"
 
 namespace mtype {
-    
-    BETTER_ENUM(Position, int, LEFT, RIGHT, TOP, BOTTOM)
-    BETTER_ENUM(Padding, int, SAME, VALID)
-    BETTER_ENUM(PoolingMode, int, MAX, AVERAGE, AVERAGE_TF)
+    template<typename T>
+    std::ostream& operator<<(typename std::enable_if<std::is_enum<T>::value, std::ostream>::type& stream, const T& e) {
+        return stream << static_cast<typename std::underlying_type<T>::type>(e);
+    }
+    enum class Position{
+        LEFT,
+        RIGHT,
+        TOP,
+        BOTTOM
+    };
+    enum class Padding{
+        SAME,
+        VALID
+    };
 
+    enum class PoolingMode {
+        MAX,
+        AVERAGE,
+        AVERAGE_TF
+    };
+
+    enum class Func{
+        SIGMOID,
+        RELU,
+        NONE
+    };
+
+    
     struct Shape {
         unsigned int batch,w,h,c;
         
@@ -25,7 +47,7 @@ namespace mtype {
         
     };
 
-    typedef std::map<std::string, std::variant<int, std::string, Shape, Padding, PoolingMode>> Dict;
+    typedef std::map<std::string, std::variant<int, std::string, Shape, Padding, PoolingMode, Shape*>> Dict;
 
 
     struct Size {

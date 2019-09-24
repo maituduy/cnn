@@ -3,8 +3,6 @@
 #include "armadillo"
 #include "mtype.h"
 #include <string>
-#include <time.h>
-#include "activation.h"
 #include "f.h"
 #include "nn_ops.h"
 
@@ -17,7 +15,7 @@ namespace layer {
     class Layer {
         protected:
 
-            Layer *pre_layer;
+            Layer *pre_layer = nullptr;
             arma::field<arma::cube>* input;
             arma::field<arma::cube> output;
             wtype weights;
@@ -26,34 +24,35 @@ namespace layer {
 
         public:
             Layer(){};
+            Layer(bool has_weights): has_weights(has_weights){};
 
-            Layer(Layer *pre_layer, bool has_weights) {
-                this->pre_layer = pre_layer;
-                this->has_weights = has_weights;
-                if (pre_layer != nullptr) {
-                    this->input = &pre_layer->output;
-                    config["input_shape"] = pre_layer->get_attr<Shape>("output_shape");
+            Layer *operator()(Layer *pre_layer) {
+                auto tmp = this;
+
+                while (tmp->pre_layer != nullptr) {
+                    tmp = tmp->pre_layer;
                 }
-            };
+
+                tmp->pre_layer = pre_layer;
+
+                return this->clone();
+            }
             
+            arma::field<arma::cube> &get_input() {
+                return *this->input;
+            }
+
+            arma::field<arma::cube> set_input(arma::field<arma::cube> &output) {
+                this->input = &output;
+            }
+
             virtual ~Layer(){};
             virtual void foward(){};
             virtual const char* classname() { return "Layer";}
 
-            virtual void initialize() {
-                Shape kernel_shape = this->get_attr<Shape>("kernel_shape");
-                Shape output_shape = this->get_attr<Shape>("output_shape");
+            virtual void initialize_config(){};
+            virtual void initialize_weights(){};
 
-                auto kernel = arma::field<arma::cube>(kernel_shape.batch);
-
-                for (size_t i = 0; i < kernel_shape.batch; i++) 
-                    kernel(i) = arma::randu<arma::cube>(kernel_shape.w, kernel_shape.h, kernel_shape.c);
-                
-                this->weights.push_back(kernel);
-                this->weights.push_back(arma::zeros<arma::vec>(output_shape.c));
-
-            }
-            
             void set_weights(wtype &weights) {
                 this->weights = weights;
                 
@@ -83,6 +82,10 @@ namespace layer {
                 return config;
             }
 
+            void set_config(Dict &config) {
+                this->config = config;
+            }
+
             arma::field<arma::cube> &get_output() {
                 return this->output;
             }
@@ -109,5 +112,30 @@ namespace layer {
                 this->config[name] = value;
             }
 
+            Layer(const Layer &layer) {
+                this->pre_layer = layer.pre_layer;
+                this->input = layer.input;
+                this->output = layer.output;
+                this->weights = layer.weights;
+                this->config = layer.config;
+                this->has_weights = layer.has_weights;
+            };
+
+            [[nodiscard]] virtual Layer* clone() const {
+                return new Layer(*this);
+            }
+
+
+            virtual void operator<<(Layer *layer) {
+                auto tmp = this;
+
+                while (tmp->pre_layer != nullptr) {
+                    tmp = tmp->pre_layer;
+                }
+                tmp->operator()(layer);
+            }
+
+            virtual void sync() {
+            }
     };
 }

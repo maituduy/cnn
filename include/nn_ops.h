@@ -1,7 +1,7 @@
 #pragma once
-
-#include "armadillo"
+#include "f.h"
 #include "mtype.h"
+#include "armadillo"
 
 using namespace arma;
 using namespace mtype;
