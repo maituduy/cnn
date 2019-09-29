@@ -42,7 +42,7 @@ namespace layer {
                 return *this->input;
             }
 
-            arma::field<arma::cube> set_input(arma::field<arma::cube> &output) {
+            void set_input(arma::field<arma::cube> &output) {
                 this->input = &output;
             }
 
