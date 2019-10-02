@@ -48,7 +48,7 @@ arma::field<arma::cube> &Model::predict(arma::field<arma::cube> input) {
 
 void Model::load_weights(const std::string& path) {
 
-    std::ifstream input(path);
+    std::ifstream input(path, std::ios_base::binary);
     json j_from_bson = json::from_bson(input);
 
     int j = 1;
