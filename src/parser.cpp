@@ -22,7 +22,7 @@ namespace parser {
     }
 
     arma::field<arma::cube> Parser::get_input(const std::string& path) {
-        std::ifstream input(path);
+        std::ifstream input(path, std::ios_base::binary);
         json j_from_bson = json::from_bson(input);
 
         int list[4];
